@@ -1,5 +1,6 @@
 package practice.myproject.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,9 @@ public class Member {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
+
+    private String loginId;
+    private String password;
 
     private String name;    //이름
     private String nickName;    //닉네임
@@ -35,8 +39,11 @@ public class Member {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
-    public Member(Long id, String name, String nickName, String ph11, String ph12, String ph13, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Meeting meeting) {
+    @Builder
+    public Member(Long id, String loginId, String password, String name, String nickName, String ph11, String ph12, String ph13, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Meeting meeting) {
         this.id = id;
+        this.loginId = loginId;
+        this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.ph11 = ph11;

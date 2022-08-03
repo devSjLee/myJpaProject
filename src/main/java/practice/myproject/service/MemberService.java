@@ -31,4 +31,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public Boolean checkDuplicatedId(String loginId) {
+        return memberRepository.existsByLoginId(loginId);
+    }
 }

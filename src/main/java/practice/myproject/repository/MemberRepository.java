@@ -6,4 +6,5 @@ import practice.myproject.domain.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    Boolean existsByLoginId(String loginId);
 }

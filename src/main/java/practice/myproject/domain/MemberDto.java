@@ -4,14 +4,19 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 public class MemberDto {
 
     @NotEmpty(message = "아이디는 필수입니다.")
+    @Size(min = 4, max = 15, message = "아이디는 4~15자리 사이로 입력해주세요")
+    @Pattern(regexp = "^[A-Za-z]+[0-9]+$", message = "영문, 숫자 혼용하여 입력해주세요")
     private String loginId;
 
     @NotEmpty(message = "비밀번호는 필수입니다.")
+    @Size(min = 4, max = 15, message = "비밀번호는 4~15자리 사이로 입력해주세요")
     private String password;
 
     @NotEmpty(message = "이름은 필수입니다.")

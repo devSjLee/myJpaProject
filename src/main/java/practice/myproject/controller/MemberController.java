@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import practice.myproject.domain.MemberDto;
+import practice.myproject.domain.MemberLoginDto;
 import practice.myproject.repository.MemberRepository;
 import practice.myproject.service.MemberService;
 
@@ -26,6 +27,22 @@ public class MemberController {
     }
 
     @GetMapping("/login")
+    public ModelAndView loginForm(ModelAndView mv) {
+        mv.addObject("memberLoginDto", new MemberLoginDto());
+        mv.setViewName("member/login");
+        return mv;
+    }
+
+    @PostMapping("/login")
+    public ModelAndView login(ModelAndView mv, MemberLoginDto memberLoginDto) {
+
+        System.out.println("memberLoginDto = " + memberLoginDto.getLoginId());
+        System.out.println("memberLoginDto = " + memberLoginDto.getPassword());
+        mv.setViewName("redirect:/");
+        return mv;
+    }
+
+    @GetMapping("/members/create")
     public ModelAndView createForm(ModelAndView mv) {
         mv.addObject("memberDto", new MemberDto());
         mv.setViewName("member/createMemberForm");
@@ -40,9 +57,7 @@ public class MemberController {
         }
 
         memberService.save(form);
-        System.out.println("111");
         mv.setViewName("redirect:/");
-        System.out.println("22");
 
 
         return mv;
@@ -50,9 +65,7 @@ public class MemberController {
 
     @GetMapping("/member/checkDuplicateId")
     public Boolean checkDuplicatedId(@RequestParam("loginId") String loginId) {
-        Boolean check = memberService.checkDuplicatedId(loginId);
-        System.out.println("test: "+check);
-        return check;
+        return memberService.checkDuplicatedId(loginId);
     }
 
 }

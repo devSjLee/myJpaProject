@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: header" />
+
+<body>
+<header>
+<div th:include="fragments/bodyHeader :: bodyHeader"/>
+</header>
+
+
+<section class="page-section portfolio" id="portfolio" style="float: none; margin:0px auto;">
+    <div class="container" style="width:460px; margin:200px auto;">
+        <form action="/login" th:object="${memberLoginDto}" method="post" class="form-inline">
+            <div class="form-group col-sm-12" style="justify-content: center;align-items: center">
+                <label th:for="name">아이디</label>
+                <input type="text" class="form-control" id="loginId" th:field="*{loginId}" placeholder="아이디를 입력하세요">
+            </div>
+            <div class="form-group col-sm-12" style="justify-content: center;align-items: center">
+                <label th:for="name">비밀번호</label>
+                <input type="password" class="form-control" id="pw" th:field="*{password}" placeholder="비밀번호를 입력하세요">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style="width: 300px;height: 50px;">로그인</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <a href="/members/create">회원가입</a>
+                <a href="">아이디 찾기</a>
+                <a href="">비밀번호 찾기</a>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+
+</body>
+
+
+</html>

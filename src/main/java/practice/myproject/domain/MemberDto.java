@@ -20,17 +20,16 @@ public class MemberDto {
     private String password;
 
     @NotEmpty(message = "이름은 필수입니다.")
+    @Pattern(regexp = "^[A-Za-z가-힣]+$", message = "영문 대소문자, 한글")
     private String name;    //이름
 
     @NotEmpty(message = "닉네임을 적어주세요")
+    @Pattern(regexp = "^[가-힣]+$", message = "닉네임은 한글만")
     private String nickName;    //닉네임
 
     @NotEmpty(message = "휴대폰번호는 필수입니다.")
-    private String ph11;   //휴대폰 앞
-    @NotEmpty(message = "휴대폰번호는 필수입니다.")
-    private String ph12;   //휴대폰 중간
-    @NotEmpty(message = "휴대폰번호는 필수입니다.")
-    private String ph13;   //휴대폰 끝
+    @Pattern(regexp = "^[0-9]+$", message = "휴대폰번호는 숫자만")
+    private String phone;   //휴대폰 앞
 
     @NotEmpty(message = "이메일은 필수입니다.")
     private String email;   //이메일

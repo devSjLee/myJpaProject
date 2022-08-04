@@ -22,9 +22,7 @@ public class Member {
     private String name;    //이름
     private String nickName;    //닉네임
 
-    private String ph11;   //휴대폰 앞
-    private String ph12;   //휴대폰 중간
-    private String ph13;   //휴대폰 끝
+    private String phone;   //휴대폰 앞
 
     private String email;   //이메일
     private String zipcode;     //우편번호
@@ -39,16 +37,15 @@ public class Member {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
+
     @Builder
-    public Member(Long id, String loginId, String password, String name, String nickName, String ph11, String ph12, String ph13, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Meeting meeting) {
+    public Member(Long id, String loginId, String password, String name, String nickName, String phone, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Meeting meeting) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
-        this.ph11 = ph11;
-        this.ph12 = ph12;
-        this.ph13 = ph13;
+        this.phone = phone;
         this.email = email;
         this.zipcode = zipcode;
         this.address = address;

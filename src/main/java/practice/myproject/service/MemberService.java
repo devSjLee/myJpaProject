@@ -23,9 +23,7 @@ public class MemberService {
                 .email(memberDto.getEmail())
                 .grade(MemberGrade.PRIMARY)
                 .nickName(memberDto.getNickName())
-                .ph11(memberDto.getPh11())
-                .ph12(memberDto.getPh12())
-                .ph13(memberDto.getPh13())
+                .phone(memberDto.getPhone())
                 .zipcode(memberDto.getZipcode())
                 .build();
         memberRepository.save(member);

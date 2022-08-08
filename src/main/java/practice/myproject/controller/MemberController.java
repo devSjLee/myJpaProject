@@ -5,16 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import practice.myproject.domain.Member;
 import practice.myproject.domain.MemberDto;
 import practice.myproject.domain.MemberLoginDto;
 import practice.myproject.repository.MemberRepository;
 import practice.myproject.service.MemberService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@SessionAttributes("memberLoginDto")
 public class MemberController {
 
     private final MemberService memberService;
@@ -34,11 +38,25 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(ModelAndView mv, MemberLoginDto memberLoginDto) {
+    public ModelAndView login(ModelAndView mv, Model model, @ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto) {
+        Optional<Member> member = memberRepository.findByLoginId(memberLoginDto.getLoginId());
+        if(member.isPresent()) {
+            Member findMember = member.get();
+            if(findMember.getPassword().equals(memberLoginDto.getPassword())) {
+                model.addAttribute("member", findMember);
+                mv.setViewName("index");
+            }
+        }else {
+            mv.setViewName("redirect:login");
+        }
 
-        System.out.println("memberLoginDto = " + memberLoginDto.getLoginId());
-        System.out.println("memberLoginDto = " + memberLoginDto.getPassword());
-        mv.setViewName("redirect:/");
+        return mv;
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(ModelAndView mv, SessionStatus status) {
+        status.setComplete();
+        mv.setViewName("index");
         return mv;
     }
 

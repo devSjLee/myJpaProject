@@ -47,6 +47,7 @@ public class MemberController {
                 System.out.println("memberLoginDto = " + memberLoginDto.getLoginId());
                 System.out.println("memberLoginDto = " + memberLoginDto.getPassword());
                 session.setAttribute("member", findMember);
+                session.setMaxInactiveInterval(30*60);  //세션시간 30분 (초단위)
                 mv.setViewName("index");
             }
         }else {
@@ -58,8 +59,9 @@ public class MemberController {
 
     @GetMapping("/logout")
     public ModelAndView logout(ModelAndView mv, HttpSession session) {
-        session.invalidate();
-        mv.setViewName("index");
+//        session.invalidate();   //모든세션 만료
+        session.removeAttribute("member");
+        mv.setViewName("redirect:/");
         return mv;
     }
 
@@ -88,5 +90,13 @@ public class MemberController {
     public Boolean checkDuplicatedId(@RequestParam("loginId") String loginId) {
         return memberService.checkDuplicatedId(loginId);
     }
+
+    @GetMapping("/meet/list")
+    public ModelAndView meetList(ModelAndView mv) {
+        mv.setViewName("meet/list");
+        return mv;
+    }
+
+
 
 }

@@ -13,12 +13,12 @@ import practice.myproject.domain.MemberLoginDto;
 import practice.myproject.repository.MemberRepository;
 import practice.myproject.service.MemberService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@SessionAttributes("memberLoginDto")
 public class MemberController {
 
     private final MemberService memberService;
@@ -33,17 +33,20 @@ public class MemberController {
     @GetMapping("/login")
     public ModelAndView loginForm(ModelAndView mv) {
         mv.addObject("memberLoginDto", new MemberLoginDto());
+        System.out.println("여기?");
         mv.setViewName("member/login");
         return mv;
     }
 
     @PostMapping("/login")
-    public ModelAndView login(ModelAndView mv, Model model, @ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto) {
+    public ModelAndView login(ModelAndView mv, Model model, MemberLoginDto memberLoginDto, HttpSession session) {
         Optional<Member> member = memberRepository.findByLoginId(memberLoginDto.getLoginId());
         if(member.isPresent()) {
             Member findMember = member.get();
             if(findMember.getPassword().equals(memberLoginDto.getPassword())) {
-                model.addAttribute("member", findMember);
+                System.out.println("memberLoginDto = " + memberLoginDto.getLoginId());
+                System.out.println("memberLoginDto = " + memberLoginDto.getPassword());
+                session.setAttribute("member", findMember);
                 mv.setViewName("index");
             }
         }else {
@@ -54,8 +57,8 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    public ModelAndView logout(ModelAndView mv, SessionStatus status) {
-        status.setComplete();
+    public ModelAndView logout(ModelAndView mv, HttpSession session) {
+        session.invalidate();
         mv.setViewName("index");
         return mv;
     }

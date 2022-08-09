@@ -11,8 +11,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
-        <li th:if="${session.memberLoginDto}" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/logout">로그아웃</a></li>
-        <li th:unless="${session.memberLoginDto}" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/login">로그인</a></li>
+        <li th:if="${session.member}" class="nav-item mx-0 mx-lg-1" th:text="${session.member.nickName}+'님 안녕하세요.'"></li>
+        <li th:if="${session.member}" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/logout">로그아웃</a></li>
+        <li th:unless="${session.member}" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/login">로그인</a></li>
         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="">게시판</a></li>
       </ul>
     </div>

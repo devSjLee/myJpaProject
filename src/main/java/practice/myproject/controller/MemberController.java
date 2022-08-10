@@ -91,11 +91,7 @@ public class MemberController {
         return memberService.checkDuplicatedId(loginId);
     }
 
-    @GetMapping("/meet/list")
-    public ModelAndView meetList(ModelAndView mv) {
-        mv.setViewName("meet/list");
-        return mv;
-    }
+
 
 
 

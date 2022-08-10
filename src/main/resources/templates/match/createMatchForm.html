@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <section class="page-section portfolio" id="portfolio">
+        <div class="container">
+            <form action="/match/create" th:object="${matchDto}" method="post" class="form-inline">
+            <table class="table">
+                <tr>
+                    <td>제목</td>
+                    <td>
+                        <input type="text" class="form-control" id="title" th:field="*{title}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>장소</td>
+                    <td>
+                        <input type="text" class="form-control" id="matchAddress" th:field="*{matchAddress}">
+                        <img src="/assets/img/search.png" style="width: 50px;height: 50px;" id="searchAddress">
+                    </td>
+                </tr>
+                <tr>
+                    <td>인원</td>
+                    <td>
+                        <input type="number" class="form-control" id="limitedPeople" th:field="*{limitedPeople}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>시간</td>
+                    <td>
+                        <input type="text" class="form-control datepicker" th:field="*{matchTime}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>한마디</td>
+                    <td>
+                        <input type="text" class="form-control" id="notice" th:field="*{notice}">
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">등록</button>
+            </form>
+        </div>
+    </section>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    window.onload = function(){
+        document.getElementById("searchAddress").addEventListener("click", function(){ //주소입력칸을 클릭하면
+            //카카오 지도 발생
+            new daum.Postcode({
+                oncomplete: function(data) { //선택시 입력값 세팅
+                    document.getElementById("matchAddress").value = data.address;
+
+                }
+            }).open();
+        });
+
+        $( function() {
+            $( ".datepicker" ).datepicker({
+                dateFormat: 'yy-mm-dd' //달력 날짜 형태
+                ,showOn: "both"
+                ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+            });
+            $('.datepicker').datepicker('setDate', 'today');
+        } );
+    }
+</script>
+
+</html>

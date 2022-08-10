@@ -34,12 +34,12 @@ public class Member {
     private MemberGrade grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meeting_id")
-    private Meeting meeting;
+    @JoinColumn(name = "match_id")
+    private Match match;
 
 
     @Builder
-    public Member(Long id, String loginId, String password, String name, String nickName, String phone, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Meeting meeting) {
+    public Member(Long id, String loginId, String password, String name, String nickName, String phone, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Match match) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;
@@ -51,6 +51,6 @@ public class Member {
         this.address = address;
         this.addressDetail = addressDetail;
         this.grade = grade;
-        this.meeting = meeting;
+        this.match = match;
     }
 }

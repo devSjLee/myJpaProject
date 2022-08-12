@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <section class="page-section portfolio" id="portfolio">
+        <div class="container">
+           <table class="table">
+               <tr>
+                   <td th:text="${matchOne.getTitle()}"></td>
+               </tr>
+               <tr>
+                   <td th:text="${matchOne.getLimitedPeople()}"></td>
+               </tr>
+               <tr>
+                   <td th:text="${matchOne.getMatchAddress()}"></td>
+               </tr>
+               <tr>
+                   <td th:text="${matchOne.getMatchTime()}"></td>
+               </tr>
+               <tr>
+                   <td th:text="${matchOne.getNotice()}"></td>
+               </tr>
+           </table>
+        </div>
+    </section>
+</div>
+<div th:replace="fragments/footer :: footer" />

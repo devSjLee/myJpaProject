@@ -38,21 +38,13 @@ public class MemberController {
         return mv;
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(ModelAndView mv, Model model, MemberLoginDto memberLoginDto, HttpSession session) {
-        Optional<Member> member = memberRepository.findByLoginId(memberLoginDto.getLoginId());
-        if(member.isPresent()) {
-            Member findMember = member.get();
-            if(findMember.getPassword().equals(memberLoginDto.getPassword())) {
-                System.out.println("memberLoginDto = " + memberLoginDto.getLoginId());
-                System.out.println("memberLoginDto = " + memberLoginDto.getPassword());
-                session.setAttribute("member", findMember);
-                session.setMaxInactiveInterval(30*60);  //세션시간 30분 (초단위)
-                mv.setViewName("index");
-            }
-        }else {
-            mv.setViewName("redirect:login");
-        }
+    @PostMapping("/loginTest")
+    public ModelAndView login(ModelAndView mv, MemberLoginDto memberLoginDto) {
+        System.out.println("탐");
+        System.out.println("아이디: "+memberLoginDto.getLoginId());
+        System.out.println("비번: "+memberLoginDto.getPassword());
+//        memberService.join(memberLoginDto);
+        mv.setViewName("/");
 
         return mv;
     }

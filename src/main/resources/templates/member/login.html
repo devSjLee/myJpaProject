@@ -10,7 +10,7 @@
 
 <section class="page-section portfolio" id="portfolio" style="float: none; margin:0px auto;">
     <div class="container" style="width:460px; margin:200px auto;">
-        <form action="/login" th:object="${memberLoginDto}" method="post" class="form-inline">
+        <form action="/loginTest" th:object="${memberLoginDto}" method="post" class="form-inline">
             <div class="form-group col-sm-12" style="justify-content: center;align-items: center">
                 <label th:for="name">아이디</label>
                 <input type="text" class="form-control" id="loginId" th:field="*{loginId}" placeholder="아이디를 입력하세요">

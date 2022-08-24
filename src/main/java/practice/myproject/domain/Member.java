@@ -33,13 +33,15 @@ public class Member {
     @Column(name = "grade")
     private MemberGrade grade;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_id")
     private Match match;
 
 
     @Builder
-    public Member(Long id, String loginId, String password, String name, String nickName, String phone, String email, String zipcode, String address, String addressDetail, MemberGrade grade, Match match) {
+
+    public Member(Long id, String loginId, String password, String name, String nickName, String phone, String email, String zipcode, String address, String addressDetail, MemberGrade grade,  Match match) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;

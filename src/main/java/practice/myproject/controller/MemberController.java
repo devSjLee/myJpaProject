@@ -38,13 +38,10 @@ public class MemberController {
         return mv;
     }
 
-    @PostMapping("/loginTest")
+    @PostMapping("/loginProc")
     public ModelAndView login(ModelAndView mv, MemberLoginDto memberLoginDto) {
-        System.out.println("탐");
-        System.out.println("아이디: "+memberLoginDto.getLoginId());
-        System.out.println("비번: "+memberLoginDto.getPassword());
-//        memberService.join(memberLoginDto);
-        mv.setViewName("/");
+        System.out.println("타냐");
+        mv.setViewName("index");
 
         return mv;
     }
@@ -72,7 +69,7 @@ public class MemberController {
         }
 
         memberService.save(form);
-        mv.setViewName("redirect:/");
+        mv.setViewName("redirect:/login");
 
 
         return mv;

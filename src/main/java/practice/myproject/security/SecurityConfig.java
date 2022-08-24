@@ -1,24 +1,15 @@
 package practice.myproject.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
 
@@ -40,19 +31,21 @@ public class SecurityConfig {
                 .csrf()
                     .disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/login", "/members/**").permitAll()
+                    .antMatchers("/", "/login", "/members/**", "/loginProc").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/login")
-                    .loginProcessingUrl("/loginTest")
+                    .loginProcessingUrl("/loginProc")
                 .usernameParameter("loginId")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/")
-                .successHandler(new MySuccessfulHandler())
-                .permitAll();
+                .failureHandler(new FailHandler())
+                .defaultSuccessUrl("/");
+//                .successHandler(new MySuccessfulHandler());
         return http.build();
     }
+
+
 
 
 }

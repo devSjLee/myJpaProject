@@ -31,10 +31,15 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public ModelAndView loginForm(ModelAndView mv) {
+    public ModelAndView loginForm(ModelAndView mv,
+                                  @RequestParam(value = "error", required = false)String error,
+                                  @RequestParam(value = "exception", required = false)String exception) {
         mv.addObject("memberLoginDto", new MemberLoginDto());
         System.out.println("여기?");
         mv.setViewName("member/login");
+        mv.addObject("error", error);
+        mv.addObject("exception", exception);
+
         return mv;
     }
 

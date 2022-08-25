@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -40,8 +41,13 @@ public class SecurityConfig {
                 .usernameParameter("loginId")
                 .passwordParameter("password")
                 .failureHandler(new FailHandler())
-                .defaultSuccessUrl("/");
-//                .successHandler(new MySuccessfulHandler());
+                .defaultSuccessUrl("/")
+                .successHandler(new MySuccessfulHandler())
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);
         return http.build();
     }
 

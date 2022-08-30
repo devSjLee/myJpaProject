@@ -93,14 +93,16 @@
     function checkDuplicatedId() {
         var loginId = document.getElementById("loginId");
         var id = loginId.value;
+        console.log(id);
         if (!id) {
             alert("아이디를 입력해주세요.");
             return false;
         }
         $.ajax({
-            url : "/member/checkDuplicateId",
+            type : "POST",
+            url : "/members/checkDuplicateId",
             data : {
-                loginId : id
+                "loginId" : id
             },
             success : function (data) {
                 if(data == true) {

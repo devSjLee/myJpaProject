@@ -1,13 +1,12 @@
 package practice.myproject.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import practice.myproject.domain.Member;
 import practice.myproject.domain.MemberDto;
 import practice.myproject.domain.MemberLoginDto;
 import practice.myproject.repository.MemberRepository;
@@ -15,7 +14,6 @@ import practice.myproject.service.MemberService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +33,6 @@ public class MemberController {
                                   @RequestParam(value = "error", required = false)String error,
                                   @RequestParam(value = "exception", required = false)String exception) {
         mv.addObject("memberLoginDto", new MemberLoginDto());
-        System.out.println("여기?");
         mv.setViewName("member/login");
         mv.addObject("error", error);
         mv.addObject("exception", exception);
@@ -80,9 +77,12 @@ public class MemberController {
         return mv;
     }
 
-    @GetMapping("/member/checkDuplicateId")
+    @PostMapping("/members/checkDuplicateId")
     public Boolean checkDuplicatedId(@RequestParam("loginId") String loginId) {
-        return memberService.checkDuplicatedId(loginId);
+        System.out.println("test: "+loginId);
+        Boolean result = memberService.checkDuplicatedId(loginId);
+        System.out.println("result = " + result);
+        return result;
     }
 
 

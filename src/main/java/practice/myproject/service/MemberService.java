@@ -43,11 +43,7 @@ public class MemberService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("username = " + username);
         Optional<Member> findMember = memberRepository.findByLoginId(username);
-        if(findMember != null) {
-            System.out.println("널아님");
-            Member member = findMember.get();
-            return new CustomDetails(member);
-        }
-        return null;
+        findMember.orElseThrow(() -> new UsernameNotFoundException("해당회원이 존재하지 않습니다."));
+        return new CustomDetails(findMember.get());
     }
 }

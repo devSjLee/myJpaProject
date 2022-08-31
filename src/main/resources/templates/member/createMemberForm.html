@@ -19,7 +19,8 @@
                        th:class="${#fields.hasErrors('loginId')}? 'form-control fieldError' : 'form-control'">
                 <p th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}" th:errorclass="fieldError"></p>
             </div>
-            <button type="button" class="btn btn-primary" onclick="checkDuplicatedId();">중복확인</button>
+            <button type="button" class="btn btn-primary" onclick="checkDuplicatedId();" style="display: inline;margin-top: 5px;">중복확인</button>
+            <button type="button" id="changeId" class="btn btn-primary" onclick="test();" style="display: inline;margin-top: 5px;">아이디변경</button>
             <div class="form-group col-xs-2">
                 <label th:for="name">비밀번호</label>
                 <input type="password" id="pw" th:field="*{password}" placeholder="비밀번호를 입력하세요"
@@ -92,6 +93,7 @@
     //아이디 중복체크 ajax
     function checkDuplicatedId() {
         var loginId = document.getElementById("loginId");
+        let changeId = document.getElementById("changeId");
         var id = loginId.value;
         console.log(id);
         if (!id) {
@@ -110,12 +112,19 @@
                     loginId.value = "";
                 }else{
                     alert("중복확인 완료!");
+                    loginId.readOnly = true;
                 }
 
             }, error : function (data) {
                 alert("에러");
             }
         });
+    }
+
+    //중복확인 후 아이디 변경
+    function test() {
+        console.log("실행");
+        document.getElementById("loginId").readOnly = false;
     }
 
     //비밀번호 확인 함수

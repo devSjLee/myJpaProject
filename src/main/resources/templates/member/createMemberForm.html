@@ -12,7 +12,7 @@
     <div th:include="fragments/bodyHeader :: bodyHeader"/>
 
     <section class="page-section portfolio" id="portfolio">
-        <form action="/members/create" th:object="${memberDto}" method="post" class="form-inline">
+        <form action="/members/create" id="form" th:object="${memberDto}" method="post" class="form-inline">
             <div class="form-group col-sm-3">
                 <label th:for="name">아이디</label>
                 <input type="text" id="loginId" th:field="*{loginId}" placeholder="아이디를 입력하세요"
@@ -66,7 +66,7 @@
                 <input type="text" id="addressDetail" class="form-control" th:field="*{addressDetail}" placeholder="상세주소">
 
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" onclick="enrollBtn();" class="btn btn-primary" style="margin-top: 5px;">회원등록</button>
         </form>
     </section>
 </div>
@@ -88,6 +88,19 @@
                 }
             }).open();
         });
+    }
+    //아이디 중복검사 Flag
+    let idFlag = "N";
+
+    //회원등록 시 중복검사 했는지 체크
+    function enrollBtn() {
+        let form = document.getElementById("form");
+        if(idFlag == "Y") {
+            form.submit();
+        }else {
+            alert("아이디 중복검사를 진행해 주세요.");
+            return false;
+        }
     }
 
     //아이디 중복체크 ajax
@@ -113,6 +126,7 @@
                 }else{
                     alert("중복확인 완료!");
                     loginId.readOnly = true;
+                    idFlag = "Y";
                 }
 
             }, error : function (data) {
@@ -125,6 +139,7 @@
     function test() {
         console.log("실행");
         document.getElementById("loginId").readOnly = false;
+        idFlag = "N";
     }
 
     //비밀번호 확인 함수

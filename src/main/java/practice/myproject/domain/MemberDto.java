@@ -3,6 +3,7 @@ package practice.myproject.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -32,6 +33,7 @@ public class MemberDto {
     private String phone;   //휴대폰 앞
 
     @NotEmpty(message = "이메일은 필수입니다.")
+    @Email(message = "이메일 형식이 아닙니다.")
     private String email;   //이메일
     @NotEmpty(message = "우편번호는 필수입니다.")
     private String zipcode;     //우편번호

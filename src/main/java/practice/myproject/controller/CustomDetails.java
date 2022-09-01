@@ -23,7 +23,7 @@ public class CustomDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return member.getNickName();
+        return member.getLoginId();
     }
 
     @Override

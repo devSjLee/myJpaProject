@@ -1,6 +1,7 @@
 package practice.myproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,5 +63,19 @@ public class MatchController {
 
         return mv;
     }
+
+    @PostMapping("/match/attend")
+    public ModelAndView matchAttend(ModelAndView mv, String loginId, Long matchId) {
+        Optional<Match> findMatch = matchRepository.findById(matchId);
+        if(findMatch.isPresent()) {
+            mv.addObject("matchOne", findMatch.get());
+        }
+        //매칭신청, 신청한사람이 Member 엔티디에 members,
+        matchService.matchAttend(loginId, matchId);
+
+        mv.setViewName("match/detail");
+        return mv;
+    }
+
 
 }

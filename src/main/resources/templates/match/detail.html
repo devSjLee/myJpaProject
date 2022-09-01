@@ -7,12 +7,13 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <section class="page-section portfolio" id="portfolio">
         <div class="container">
+            <form action="/match/attend" method="post">
            <table class="table">
                <tr>
                    <td th:text="${matchOne.getTitle()}"></td>
                </tr>
                <tr>
-                   <td th:text="${matchOne.getLimitedPeople()}"></td>
+                   <td th:text="${matchOne.getMembers().size()}+'/'+${matchOne.getLimitedPeople()}"></td>
                </tr>
                <tr>
                    <td th:text="${matchOne.getMatchAddress()}"></td>
@@ -23,7 +24,16 @@
                <tr>
                    <td th:text="${matchOne.getNotice()}"></td>
                </tr>
+               <tr>
+                   <td>
+                       <input type="hidden" name="loginId" th:value="${#authentication.name}">
+                       <input type="hidden" name="matchId" th:value="${matchOne.getId()}">
+                       <button type="submit" class="btn btn-primary">신청하기</button>
+                       <p></p>
+                   </td>
+               </tr>
            </table>
+            </form>
         </div>
     </section>
 </div>

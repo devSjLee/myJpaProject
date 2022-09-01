@@ -12,7 +12,10 @@
                     <h1>매칭 리스트</h1>
                     <span><a th:href="@{/match/createMatchForm}" style="float:right;">매칭만들기</a></span>
                     <ul class="list-group" th:each="match : ${match}">
-                        <li class="list-group-item"><a th:text="${match.getTitle()}" th:href="@{/match/detail(id=${match.getId()})}"></a></li>
+                        <li class="list-group-item" style="margin-bottom: 5px;">
+                            <a th:text="${match.getTitle()}" th:href="@{/match/detail(id=${match.getId()})}"></a>
+                            <p th:text="${match.getMembers().size()}+'/'+${match.getLimitedPeople()}"></p>
+                        </li>
                     </ul>
                 </div>
             </div>

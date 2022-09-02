@@ -65,13 +65,14 @@ public class MatchController {
     }
 
     @PostMapping("/match/attend")
-    public ModelAndView matchAttend(ModelAndView mv, String loginId, Long matchId) {
-        Optional<Match> findMatch = matchRepository.findById(matchId);
+    public ModelAndView matchAttend(ModelAndView mv, String loginId, Long id) {
+        //매칭신청, 신청한사람이 Member 엔티디에 members,
+        matchService.matchAttend(loginId, id);
+
+        Optional<Match> findMatch = matchRepository.findById(id);
         if(findMatch.isPresent()) {
             mv.addObject("matchOne", findMatch.get());
         }
-        //매칭신청, 신청한사람이 Member 엔티디에 members,
-        matchService.matchAttend(loginId, matchId);
 
         mv.setViewName("match/detail");
         return mv;

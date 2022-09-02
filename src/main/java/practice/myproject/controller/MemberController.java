@@ -48,13 +48,6 @@ public class MemberController {
         return mv;
     }
 
-    @GetMapping("/logout")
-    public ModelAndView logout(ModelAndView mv, HttpSession session) {
-//        session.invalidate();   //모든세션 만료
-        session.removeAttribute("member");
-        mv.setViewName("redirect:/");
-        return mv;
-    }
 
     @GetMapping("/members/create")
     public ModelAndView createForm(ModelAndView mv) {

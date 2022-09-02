@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static practice.myproject.domain.QMatch.*;
+
 @Service
 @RequiredArgsConstructor
 public class MatchService {
@@ -39,23 +41,16 @@ public class MatchService {
     }
 
     @Transactional
-    public void matchAttend(String loginId, Long matchId) {
-        //회원 가져오기
-        Optional<Member> member = memberRepository.findByLoginId(loginId);
-        Member findMember = member.get();
-
-        Optional<Match> match1 = matchRepository.findById(matchId);
-        Match findMatch = match1.get();
-        findMatch.getMembers().add(findMember);
+    public void matchAttend(String loginId, Long id) {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMatch match = QMatch.match;
-
+        QMember member1 = QMember.member;
         queryFactory
-                .update(match)
-                .set(match.members, findMatch.getMembers())
-                .where(match.id.eq(matchId))
+                .update(member1)
+                .set(member1.match.id, id)
+                .where(member1.loginId.eq(loginId))
                 .execute();
-
+        em.flush();
+        em.clear();
     }
 }

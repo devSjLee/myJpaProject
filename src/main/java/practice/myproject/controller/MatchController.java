@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import practice.myproject.domain.Match;
 import practice.myproject.domain.MatchDto;
+import practice.myproject.domain.Member;
 import practice.myproject.repository.MatchRepository;
 import practice.myproject.service.MatchService;
 
@@ -54,10 +56,16 @@ public class MatchController {
     }
 
     @GetMapping("/match/detail")
-    public ModelAndView matchDetail(ModelAndView mv, Long id) {
+    public ModelAndView matchDetail(ModelAndView mv, Long id, String loginId, String message) {
         Optional<Match> findMatch = matchRepository.findById(id);
         if(findMatch.isPresent()) {
             mv.addObject("matchOne", findMatch.get());
+            for (Member member : findMatch.get().getMembers()) {
+                if(member.getLoginId().equals(loginId)) {
+                    mv.addObject("attendedId", loginId);
+                    mv.addObject("message", "이미 가입중인 매칭입니다.");
+                }
+            }
         }
         mv.setViewName("match/detail");
 
@@ -65,16 +73,13 @@ public class MatchController {
     }
 
     @PostMapping("/match/attend")
-    public ModelAndView matchAttend(ModelAndView mv, String loginId, Long id) {
+    public ModelAndView matchAttend(ModelAndView mv, String loginId, Long id, RedirectAttributes redirectAttributes) {
         //매칭신청, 신청한사람이 Member 엔티디에 members,
         matchService.matchAttend(loginId, id);
 
-        Optional<Match> findMatch = matchRepository.findById(id);
-        if(findMatch.isPresent()) {
-            mv.addObject("matchOne", findMatch.get());
-        }
-
-        mv.setViewName("match/detail");
+        mv.setViewName("redirect:/match/detail");
+        redirectAttributes.addAttribute("id", id);
+        redirectAttributes.addAttribute("loginId", loginId);
         return mv;
     }
 

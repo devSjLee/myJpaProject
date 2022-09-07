@@ -28,7 +28,8 @@
                    <td>
                        <input type="hidden" name="loginId" th:value="${#authentication.name}">
                        <input type="hidden" name="id" th:value="${matchOne.getId()}">
-                       <button type="submit" class="btn btn-primary">신청하기</button>
+                       <button th:if="${attendedId}" type="submit" class="btn btn-primary">이미가입</button>
+                       <button th:unless="${attendedId}" type="submit" class="btn btn-primary">신청하기</button>
                        <p></p>
                    </td>
                </tr>
@@ -37,4 +38,12 @@
         </div>
     </section>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.onload = function () {
+        const message = [[${message}]];
+        alert(message);
+    }
+    /*]]>*/
+</script>
 <div th:replace="fragments/footer :: footer" />

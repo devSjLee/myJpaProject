@@ -26,7 +26,7 @@ public class MatchService {
     private final EntityManager em;
 
 
-    public void save(MatchDto matchDto) {
+    public Match save(MatchDto matchDto) {
 
         LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         Match match = Match.builder()
@@ -37,7 +37,8 @@ public class MatchService {
                 .notice(matchDto.getNotice())
                 .createTime(LocalDateTime.now())
                 .build();
-        matchRepository.save(match);
+        Match match1 = matchRepository.save(match);
+        return match1;
     }
 
     @Transactional

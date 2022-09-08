@@ -11,6 +11,7 @@ import practice.myproject.domain.Match;
 import practice.myproject.domain.MatchDto;
 import practice.myproject.domain.Member;
 import practice.myproject.repository.MatchRepository;
+import practice.myproject.repository.MemberRepository;
 import practice.myproject.service.MatchService;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class MatchController {
 
     private final MatchService matchService;
     private final MatchRepository matchRepository;
+    private final MemberRepository memberRepository;
 
 
     @GetMapping("/match/list")
@@ -43,13 +45,8 @@ public class MatchController {
 
     @PostMapping("/match/create")
     public ModelAndView createMatch(ModelAndView mv, MatchDto matchDto) {
-        System.out.println("matchDto = " + matchDto.getMatchTime());
-        System.out.println("matchDto = " + matchDto.getTitle());
-        System.out.println("matchDto = " + matchDto.getNotice());
-        System.out.println("matchDto = " + matchDto.getMatchAddress());
-        System.out.println("matchDto = " + matchDto.getLimitedPeople());
-        matchService.save(matchDto);
-
+        Match match = matchService.save(matchDto);
+        matchService.matchAttend(match.getMembers().get(0).getLoginId(), match.getId());
 
         mv.setViewName("redirect:/match/list");
         return mv;
@@ -57,16 +54,26 @@ public class MatchController {
 
     @GetMapping("/match/detail")
     public ModelAndView matchDetail(ModelAndView mv, Long id, String loginId, String message) {
+        //회원이 참여중인 매칭이 있는지 확인
+        Optional<Member> member1 = memberRepository.findByLoginId(loginId);
+        if(member1.isPresent()) {
+            if(member1.get().getMatch() != null) {
+                mv.addObject("checkMatchMsg", "기존에 참여중인 매칭이 있습니다. 새로운 매칭에 참여하시겠습니까?? (기존에 참여중인 매칭은 삭제)");
+            }
+        }
+
         Optional<Match> findMatch = matchRepository.findById(id);
         if(findMatch.isPresent()) {
             mv.addObject("matchOne", findMatch.get());
             for (Member member : findMatch.get().getMembers()) {
                 if(member.getLoginId().equals(loginId)) {
                     mv.addObject("attendedId", loginId);
-                    mv.addObject("message", "이미 가입중인 매칭입니다.");
                 }
             }
         }
+        mv.addObject("id", id);
+        mv.addObject("loginId", loginId);
+        mv.addObject("message", message);
         mv.setViewName("match/detail");
 
         return mv;
@@ -74,12 +81,28 @@ public class MatchController {
 
     @PostMapping("/match/attend")
     public ModelAndView matchAttend(ModelAndView mv, String loginId, Long id, RedirectAttributes redirectAttributes) {
+        //리다이렉트시 필요한 공통 변수
+        redirectAttributes.addAttribute("id", id);
+        redirectAttributes.addAttribute("loginId", loginId);
+
+        Optional<Match> match = matchRepository.findById(id);
+        if(match.isPresent()) {
+            Match findMatch = match.get();
+            for (Member member : findMatch.getMembers()) {
+                if(member.getLoginId().equals(loginId)) {
+                    redirectAttributes.addAttribute("message", "이미 가입중인 매칭입니다.");
+                    mv.setViewName("redirect:/match/detail");
+                    return mv;
+
+                }
+            }
+        }
+
         //매칭신청, 신청한사람이 Member 엔티디에 members,
         matchService.matchAttend(loginId, id);
 
+        redirectAttributes.addAttribute("message", "매칭 참여 완료!!");
         mv.setViewName("redirect:/match/detail");
-        redirectAttributes.addAttribute("id", id);
-        redirectAttributes.addAttribute("loginId", loginId);
         return mv;
     }
 

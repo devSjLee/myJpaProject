@@ -3,9 +3,7 @@ package practice.myproject.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import practice.myproject.domain.Match;
@@ -69,6 +67,7 @@ public class MatchController {
         Optional<Match> findMatch = matchRepository.findById(id);
         if(findMatch.isPresent()) {
             mv.addObject("matchOne", findMatch.get());
+            mv.addObject("createdBy", findMatch.get().getCreateBy());
             for (Member member : findMatch.get().getMembers()) {
                 if(member.getLoginId().equals(loginId)) {
                     mv.addObject("attendedId", loginId);

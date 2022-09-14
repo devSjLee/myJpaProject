@@ -24,13 +24,17 @@
                <tr>
                    <td th:text="${matchOne.getNotice()}"></td>
                </tr>
+
                <tr>
                    <td>
                        <input type="hidden" name="loginId" th:value="${#authentication.name}">
                        <input type="hidden" name="id" th:value="${matchOne.getId()}">
-                       <button th:if="${attendedId}" type="submit" class="btn btn-primary" style="display: none;">이미가입</button>
-                       <button th:unless="${attendedId}" type="submit" class="btn btn-primary" onclick="checkMatch();">신청하기</button>
+                       <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
+                       <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기</button>
                        <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
+
+                       <p th:text="${createdBy}"></p>
+                       <p th:text="${#authentication.name}"></p>
                        <p></p>
                    </td>
                </tr>
@@ -52,9 +56,12 @@
         if(checkMatchMsg != null) {
             if(confirm(checkMatchMsg)) {
                 document.getElementById('form').submit();
+            }else {
+                return false;
             }
         }
     }
+
     /*]]>*/
 
 </script>

@@ -25,19 +25,21 @@ public class Match {
     private LocalDateTime matchTime;     //매칭 시간
     private String notice;  //공지사항, 한마디
 
+    private String createBy;    //작성자
     private LocalDateTime createTime;   //글 작성 시간
 
     @OneToMany(mappedBy = "match")
     private List<Member> members = new ArrayList<>();
 
     @Builder
-    public Match(Long id, String title, int limitedPeople, String matchAddress, LocalDateTime matchTime, String notice, LocalDateTime createTime, List<Member> members) {
+    public Match(Long id, String title, int limitedPeople, String matchAddress, LocalDateTime matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
         this.id = id;
         this.title = title;
         this.limitedPeople = limitedPeople;
         this.matchAddress = matchAddress;
         this.matchTime = matchTime;
         this.notice = notice;
+        this.createBy = createBy;
         this.createTime = createTime;
         this.members = members;
     }

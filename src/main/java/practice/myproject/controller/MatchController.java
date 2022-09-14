@@ -1,6 +1,7 @@
 package practice.myproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class MatchController {
 
     @GetMapping("/match/list")
     public ModelAndView matchList(ModelAndView mv) {
-        List<Match> matchList = matchRepository.findAll();
+        List<Match> matchList = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "matchTime"));
         mv.setViewName("match/list");
         mv.addObject("match", matchList);
         return mv;
@@ -44,9 +45,12 @@ public class MatchController {
     }
 
     @PostMapping("/match/create")
-    public ModelAndView createMatch(ModelAndView mv, MatchDto matchDto) {
-        Match match = matchService.save(matchDto);
-        matchService.matchAttend(match.getMembers().get(0).getLoginId(), match.getId());
+    public ModelAndView createMatch(ModelAndView mv, MatchDto matchDto, String loginId) {
+        Match match = matchService.save(matchDto, loginId);
+
+        //매칭만든사람 자동으로 해당 매칭에 가입
+        System.out.println("이게뭐지: "+loginId);
+        matchService.matchAttend(loginId, match.getId());
 
         mv.setViewName("redirect:/match/list");
         return mv;

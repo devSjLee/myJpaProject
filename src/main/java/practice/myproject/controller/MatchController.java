@@ -30,7 +30,7 @@ public class MatchController {
     @GetMapping("/match/list")
     public ModelAndView matchList(ModelAndView mv, String message) {
         List<Match> matchList = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "matchTime"));
-        mv.addObject("match", matchList);
+        mv.addObject("matchList", matchList);
         mv.addObject("message", message);
         mv.setViewName("match/list");
         return mv;

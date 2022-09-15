@@ -19,7 +19,6 @@ public class Match {
     @Column(name = "match_id")
     private Long id;
 
-    private String title;    //매칭 제목
     private int limitedPeople;  //제한 인원
     private String matchAddress;   //매칭 장소
     private LocalDateTime matchTime;     //매칭 시간
@@ -32,9 +31,8 @@ public class Match {
     private List<Member> members = new ArrayList<>();
 
     @Builder
-    public Match(Long id, String title, int limitedPeople, String matchAddress, LocalDateTime matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
+    public Match(Long id, int limitedPeople, String matchAddress, LocalDateTime matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
         this.id = id;
-        this.title = title;
         this.limitedPeople = limitedPeople;
         this.matchAddress = matchAddress;
         this.matchTime = matchTime;

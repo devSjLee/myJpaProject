@@ -9,16 +9,11 @@
         <div class="container">
             <form action="/match/create" th:object="${matchDto}" method="post" class="form-inline">
             <table class="table">
-                <tr>
-                    <td>제목</td>
-                    <td>
-                        <input type="text" class="form-control" id="title" th:field="*{title}">
-                        <input type="hidden" name="loginId" th:value="${#authentication.name}">
-                    </td>
-                </tr>
+
                 <tr>
                     <td>장소</td>
                     <td>
+                        <input type="hidden" name="loginId" th:value="${#authentication.name}">
                         <input type="text" class="form-control" id="matchAddress" th:field="*{matchAddress}">
                         <img src="/assets/img/search.png" style="width: 50px;height: 50px;" id="searchAddress">
                     </td>

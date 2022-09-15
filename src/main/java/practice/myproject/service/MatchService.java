@@ -26,6 +26,8 @@ public class MatchService {
     private final EntityManager em;
 
 
+
+
     public Match save(MatchDto matchDto, String loginId) {
 
         LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -45,8 +47,9 @@ public class MatchService {
     @Transactional
     public void matchAttend(String loginId, Long id) {
 
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
         QMember member1 = QMember.member;
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         queryFactory
                 .update(member1)
                 .set(member1.match.id, id)
@@ -54,5 +57,26 @@ public class MatchService {
                 .execute();
         em.flush();
         em.clear();
+    }
+
+    @Transactional
+    public Long deleteMatch(Long id) {
+        Match findMatch = matchRepository.findById(id).get();
+        Long deleteId = findMatch.getId();
+
+        QMember member1 = QMember.member;
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        long execute = queryFactory
+                .update(member1)
+                .setNull(member1.match.id)
+                .where(member1.match.id.eq(deleteId))
+                .execute();
+
+        em.flush();
+        em.clear();
+
+        matchRepository.deleteById(id);
+        return execute;
     }
 }

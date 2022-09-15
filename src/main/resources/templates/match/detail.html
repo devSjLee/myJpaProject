@@ -29,9 +29,6 @@
                    <td>
                        <input type="hidden" name="loginId" th:value="${#authentication.name}">
                        <input type="hidden" name="id" th:value="${matchOne.getId()}">
-                       <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
-                       <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기</button>
-                       <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
 
                        <p th:text="${createdBy}"></p>
                        <p th:text="${#authentication.name}"></p>
@@ -39,6 +36,13 @@
                    </td>
                </tr>
            </table>
+            </form>
+           <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
+           <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기</button>
+           <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
+            <form th:action="@{'/match/'+${matchOne.getId()}}" id="deleteFrm" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary" onclick="deleteMatch();">삭제</button>
             </form>
         </div>
     </section>
@@ -51,6 +55,15 @@
             alert(message);
         }
     }
+
+    function deleteMatch() {
+        if(confirm("매칭을 삭제하시겠습니까??")) {
+            document.getElementById('deleteFrm').submit();
+        }else {
+            return false;
+        }
+    }
+
     function checkMatch() {
         const checkMatchMsg = [[${checkMatchMsg}]];
         if(checkMatchMsg != null) {

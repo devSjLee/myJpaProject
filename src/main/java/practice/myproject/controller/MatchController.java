@@ -28,10 +28,11 @@ public class MatchController {
 
 
     @GetMapping("/match/list")
-    public ModelAndView matchList(ModelAndView mv) {
+    public ModelAndView matchList(ModelAndView mv, String message) {
         List<Match> matchList = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "matchTime"));
-        mv.setViewName("match/list");
         mv.addObject("match", matchList);
+        mv.addObject("message", message);
+        mv.setViewName("match/list");
         return mv;
     }
 
@@ -106,6 +107,16 @@ public class MatchController {
 
         redirectAttributes.addAttribute("message", "매칭 참여 완료!!");
         mv.setViewName("redirect:/match/detail");
+        return mv;
+    }
+
+    @DeleteMapping("/match/{id}")
+    public ModelAndView deleteMatch(ModelAndView mv, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        Long aLong = matchService.deleteMatch(id);
+        System.out.println("뭐지: "+aLong);
+        redirectAttributes.addAttribute("message", "삭제 완료!!");
+        mv.setViewName("redirect:/match/list");
         return mv;
     }
 

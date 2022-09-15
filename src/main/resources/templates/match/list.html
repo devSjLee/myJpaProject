@@ -23,4 +23,15 @@
         </div>
     </section>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.onload = function () {
+        const message = [[${message}]];
+        if(message != null) {
+            alert(message);
+        }
+    }
+
+    /*]]>*/
+</script>
     <div th:replace="fragments/footer :: footer" />

@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
-
+<head th:replace="fragments/header :: header"/>
+<style>
+    p {
+        display: inline;
+    }
+</style>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <section class="page-section portfolio" id="portfolio">
+    <section class="page-section portfolio" id="portfolio" style="height: 700px;">
         <div class="container">
             <form action="/match/attend" method="post" id="form">
-           <table class="table">
-               <tr>
-                   <td th:text="${matchOne.getTitle()}"></td>
-               </tr>
-               <tr>
-                   <td th:text="${matchOne.getMembers().size()}+'/'+${matchOne.getLimitedPeople()}"></td>
-               </tr>
-               <tr>
-                   <td th:text="${matchOne.getMatchAddress()}"></td>
-               </tr>
-               <tr>
-                   <td th:text="${#temporals.format(matchOne.getMatchTime(), 'yyyy-MM-dd HH:mm')}"></td>
-               </tr>
-               <tr>
-                   <td th:text="${matchOne.getNotice()}"></td>
-               </tr>
+                <input type="hidden" name="loginId" th:value="${#authentication.name}">
+                <input type="hidden" name="id" th:value="${matchOne.getId()}">
 
-               <tr>
-                   <td>
-                       <input type="hidden" name="loginId" th:value="${#authentication.name}">
-                       <input type="hidden" name="id" th:value="${matchOne.getId()}">
-
-                       <p th:text="${createdBy}"></p>
-                       <p th:text="${#authentication.name}"></p>
-                       <p></p>
-                   </td>
-               </tr>
-           </table>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <b>인원수&nbsp;:&nbsp;</b>
+                            <p th:text="${matchOne.getMembers().size()}+'/'+${matchOne.getLimitedPeople()}"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>장소&nbsp;:&nbsp;</b>
+                            <p th:text="${matchOne.getMatchAddress()}">></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>시간&nbsp;:&nbsp;</b>
+                            <p th:text="${#temporals.format(matchOne.getMatchTime(), 'yyyy-MM-dd HH:mm')}"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>공지사항&nbsp;:&nbsp;</b>
+                            <p th:text="${matchOne.getNotice()}"></p>
+                        </td>
+                    </tr>
+                </table>
             </form>
-           <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
-           <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기</button>
-           <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
-            <form th:action="@{'/match/'+${matchOne.getId()}}" id="deleteFrm" method="post">
+            <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
+            <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기
+            </button>
+            <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
+            <form th:action="@{'/match/'+${matchOne.getId()}}" id="deleteFrm" method="post" style="display: inline;">
                 <input type="hidden" name="_method" value="delete">
-                <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary" onclick="deleteMatch();">삭제</button>
+                <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
+                        onclick="deleteMatch();">삭제
+                </button>
             </form>
         </div>
     </section>
@@ -51,25 +59,25 @@
     /*<![CDATA[*/
     window.onload = function () {
         const message = [[${message}]];
-        if(message != null) {
+        if (message != null) {
             alert(message);
         }
     }
 
     function deleteMatch() {
-        if(confirm("매칭을 삭제하시겠습니까??")) {
+        if (confirm("매칭을 삭제하시겠습니까??")) {
             document.getElementById('deleteFrm').submit();
-        }else {
+        } else {
             return false;
         }
     }
 
     function checkMatch() {
         const checkMatchMsg = [[${checkMatchMsg}]];
-        if(checkMatchMsg != null) {
-            if(confirm(checkMatchMsg)) {
+        if (checkMatchMsg != null) {
+            if (confirm(checkMatchMsg)) {
                 document.getElementById('form').submit();
-            }else {
+            } else {
                 return false;
             }
         }
@@ -78,4 +86,4 @@
     /*]]>*/
 
 </script>
-<div th:replace="fragments/footer :: footer" />
+<div th:replace="fragments/footer :: footer"/>

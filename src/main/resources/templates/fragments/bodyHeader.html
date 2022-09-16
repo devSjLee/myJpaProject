@@ -11,7 +11,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
-        <li th:if="${#authorization.expr('isAuthenticated()')}" class="nav-item mx-0 mx-lg-1" th:text="${#authentication.name}+'님 안녕하세요.'"></li>
+        <li th:if="${#authorization.expr('isAuthenticated()')}" class="nav-item mx-0 mx-lg-1"><p class="nav-link py-3 px-0 px-lg-3 rounded" th:text="${#authentication.name}+'님 안녕하세요.'"></p></li>
         <li th:if="${#authorization.expr('isAuthenticated()')}" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:href="@{/logout}">로그아웃</a></li>
         <li th:if="${#authorization.expr('isAuthenticated()')}" class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:href="@{/myPage(loginId=${#authentication.name})}">MyPage</a></li>
         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" th:href="@{/match/list}">풋살모임</a></li>

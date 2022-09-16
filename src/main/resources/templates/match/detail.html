@@ -46,6 +46,12 @@
             <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기
             </button>
             <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
+            <form th:action="@{'/match/'+${matchOne.getId()}}" id="updateFrm" method="get" style="display: inline;">
+                <input type="hidden" name="_method" value="get">
+                <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
+                        onclick="updateMatch();">수정
+                </button>
+            </form>
             <form th:action="@{'/match/'+${matchOne.getId()}}" id="deleteFrm" method="post" style="display: inline;">
                 <input type="hidden" name="_method" value="delete">
                 <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
@@ -62,6 +68,10 @@
         if (message != null) {
             alert(message);
         }
+    }
+
+    function updateMatch() {
+        document.getElementById('updateFrm').submit();
     }
 
     function deleteMatch() {

@@ -110,6 +110,18 @@ public class MatchController {
         return mv;
     }
 
+    @GetMapping("/match/{id}")
+    public ModelAndView updateMatchForm(ModelAndView mv, @PathVariable("id") Long id) {
+
+        Optional<Match> match = matchRepository.findById(id);
+        System.out.println("아이디: "+id);
+        System.out.println("아이디: "+ match.get().getNotice());
+        mv.addObject("matchOne", match.get());
+        mv.addObject("matchDto", new MatchDto());
+        mv.setViewName("match/updateMatchForm");
+        return mv;
+    }
+
     @DeleteMapping("/match/{id}")
     public ModelAndView deleteMatch(ModelAndView mv, @PathVariable Long id, RedirectAttributes redirectAttributes) {
 

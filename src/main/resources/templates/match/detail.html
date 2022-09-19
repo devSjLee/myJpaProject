@@ -83,13 +83,10 @@
     }
 
     function checkMatch() {
-        const checkMatchMsg = [[${checkMatchMsg}]];
-        if (checkMatchMsg != null) {
-            if (confirm(checkMatchMsg)) {
-                document.getElementById('form').submit();
-            } else {
-                return false;
-            }
+        if (confirm("매칭에 참여하시겠습니까?? (기존에 가입된 매칭이 있는 경우 자동 탈퇴됩니다.)")) {
+            document.getElementById('form').submit();
+        } else {
+            return false;
         }
     }
 

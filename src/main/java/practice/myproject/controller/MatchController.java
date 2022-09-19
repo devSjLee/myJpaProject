@@ -57,15 +57,6 @@ public class MatchController {
 
     @GetMapping("/match/detail")
     public ModelAndView matchDetail(ModelAndView mv, Long id, String loginId, String message) {
-        //회원이 참여중인 매칭이 있는지 확인
-        if(loginId != null) {
-            Optional<Member> member1 = memberRepository.findByLoginId(loginId);
-            if(member1.isPresent()) {
-                if(member1.get().getMatch() != null) {
-                    mv.addObject("checkMatchMsg", "기존에 참여중인 매칭이 있습니다. 새로운 매칭에 참여하시겠습니까?? (기존에 참여중인 매칭은 삭제)");
-                }
-            }
-        }
 
         if(id != null) {
             Optional<Match> findMatch = matchRepository.findById(id);

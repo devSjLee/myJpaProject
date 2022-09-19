@@ -1,21 +1,20 @@
 package practice.myproject.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import practice.myproject.domain.*;
+import practice.myproject.domain.Match;
+import practice.myproject.domain.MatchDto;
+import practice.myproject.domain.QMatch;
+import practice.myproject.domain.QMember;
 import practice.myproject.repository.MatchRepository;
 import practice.myproject.repository.MemberRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static practice.myproject.domain.QMatch.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +23,6 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final MemberRepository memberRepository;
     private final EntityManager em;
-
-
 
 
     public Match save(MatchDto matchDto, String loginId) {
@@ -77,5 +74,23 @@ public class MatchService {
 
         matchRepository.deleteById(id);
         return execute;
+    }
+
+    @Transactional
+    public Long updateMatch(Long id, MatchDto matchDto) {
+
+        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        QMatch match1 = QMatch.match;
+        JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(em, match1);
+        long execute = jpaUpdateClause
+                .set(match1.matchTime, parseTime)
+                .set(match1.matchAddress, matchDto.getMatchAddress())
+                .set(match1.notice, matchDto.getNotice())
+                .set(match1.limitedPeople, matchDto.getLimitedPeople())
+                .where(match1.id.eq(id))
+                .execute();
+        return execute;
+
     }
 }

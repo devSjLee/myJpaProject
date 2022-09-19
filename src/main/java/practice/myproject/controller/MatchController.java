@@ -58,20 +58,24 @@ public class MatchController {
     @GetMapping("/match/detail")
     public ModelAndView matchDetail(ModelAndView mv, Long id, String loginId, String message) {
         //회원이 참여중인 매칭이 있는지 확인
-        Optional<Member> member1 = memberRepository.findByLoginId(loginId);
-        if(member1.isPresent()) {
-            if(member1.get().getMatch() != null) {
-                mv.addObject("checkMatchMsg", "기존에 참여중인 매칭이 있습니다. 새로운 매칭에 참여하시겠습니까?? (기존에 참여중인 매칭은 삭제)");
+        if(loginId != null) {
+            Optional<Member> member1 = memberRepository.findByLoginId(loginId);
+            if(member1.isPresent()) {
+                if(member1.get().getMatch() != null) {
+                    mv.addObject("checkMatchMsg", "기존에 참여중인 매칭이 있습니다. 새로운 매칭에 참여하시겠습니까?? (기존에 참여중인 매칭은 삭제)");
+                }
             }
         }
 
-        Optional<Match> findMatch = matchRepository.findById(id);
-        if(findMatch.isPresent()) {
-            mv.addObject("matchOne", findMatch.get());
-            mv.addObject("createdBy", findMatch.get().getCreateBy());
-            for (Member member : findMatch.get().getMembers()) {
-                if(member.getLoginId().equals(loginId)) {
-                    mv.addObject("attendedId", loginId);
+        if(id != null) {
+            Optional<Match> findMatch = matchRepository.findById(id);
+            if (findMatch.isPresent()) {
+                mv.addObject("matchOne", findMatch.get());
+                mv.addObject("createdBy", findMatch.get().getCreateBy());
+                for (Member member : findMatch.get().getMembers()) {
+                    if (member.getLoginId().equals(loginId)) {
+                        mv.addObject("attendedId", loginId);
+                    }
                 }
             }
         }
@@ -119,6 +123,18 @@ public class MatchController {
         mv.addObject("matchOne", match.get());
         mv.addObject("matchDto", new MatchDto());
         mv.setViewName("match/updateMatchForm");
+        return mv;
+    }
+    @PutMapping("/match/{id}")
+    public ModelAndView updateMatch(ModelAndView mv, @PathVariable("id") Long id, MatchDto matchDto, String loginId, RedirectAttributes redirectAttributes) {
+
+        Long result = matchService.updateMatch(id, matchDto);
+        if(result != null) {
+            redirectAttributes.addAttribute("id", id);
+            redirectAttributes.addAttribute("loginId", loginId);
+            redirectAttributes.addAttribute("message", "수정완료!!");
+        }
+        mv.setViewName("redirect:/match/detail");
         return mv;
     }
 

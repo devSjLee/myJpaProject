@@ -7,33 +7,33 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <section class="page-section portfolio" id="portfolio">
         <div class="container">
-            <form action="/match/update" th:object="${matchDto}" method="post" class="form-inline">
+            <form th:action="@{'/match/'+${matchOne.getId()}}" th:object="${matchDto}" method="post" class="form-inline">
                 <input type="hidden" name="_method" value="put">
                 <table class="table">
                     <tr>
                         <td>장소</td>
                         <td>
                             <input type="hidden" name="loginId" th:value="${#authentication.name}">
-                            <input type="text" class="form-control" th:field="*{matchAddress}" th:value="${matchOne.getMatchAddress()}">
+                            <input type="text" class="form-control" name="matchAddress" th:value="${matchOne.getMatchAddress()}">
                             <img src="/assets/img/search.png" style="width: 50px;height: 50px;" id="searchAddress">
                         </td>
                     </tr>
                     <tr>
                         <td>인원</td>
                         <td>
-                            <input type="number" class="form-control" id="limitedPeople" th:field="*{limitedPeople}" th:value="${matchOne.getLimitedPeople()}">
+                            <input type="number" class="form-control" id="limitedPeople" name="limitedPeople" th:value="${matchOne.getLimitedPeople()}">
                         </td>
                     </tr>
                     <tr>
                         <td>시간</td>
                         <td>
-                            <input type="text" class="form-control datetimepicker" th:field="*{matchTime}" th:value="${#temporals.format(matchOne.getMatchTime(), 'yyyy-MM-dd HH:mm')}" autocomplete="off">
+                            <input type="text" class="form-control datetimepicker" name="matchTime" th:value="${#temporals.format(matchOne.getMatchTime(), 'yyyy-MM-dd HH:mm')}" autocomplete="off">
                         </td>
                     </tr>
                     <tr>
                         <td>한마디</td>
                         <td>
-                            <input type="text" class="form-control" id="notice" th:field="*{notice}" th:value="${matchOne.getNotice()}">
+                            <input type="text" class="form-control" id="notice" name="notice" th:value="${matchOne.getNotice()}">
                         </td>
                     </tr>
                 </table>

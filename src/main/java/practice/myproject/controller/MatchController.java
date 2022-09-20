@@ -1,6 +1,9 @@
 package practice.myproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +32,8 @@ public class MatchController {
 
     @GetMapping("/match/list")
     public ModelAndView matchList(ModelAndView mv, String message) {
-        List<Match> matchList = matchRepository.findAll(Sort.by(Sort.Direction.ASC, "matchTime"));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("matchTime").ascending());
+        Page<Match> matchList = matchRepository.findAll(pageable);
         mv.addObject("matchList", matchList);
         mv.addObject("message", message);
         mv.setViewName("match/list");

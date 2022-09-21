@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
-
+<head th:replace="fragments/header :: header"/>
+<style>
+    ul li {
+        display: inline;
+    }
+</style>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -11,10 +15,23 @@
                 <div class="col-12">
                     <h1 style="display: inline">매칭 리스트</h1>
                     <span><a th:href="@{/match/createMatchForm}" style="float:right;">매칭만들기</a></span>
+
+                    <div>
+
+                        <ul>
+                            <li th:each="date : ${dateArr}">
+                                <a th:href="@{/match/list(dateKey=${#temporals.format(date, 'yyyy-MM-dd')})}">
+                                    [[${#temporals.format(date, 'dd')}]]
+                                </a>
+                            </li>
+                        </ul>
+
+
+                    </div>
                     <ul class="list-group" th:if="${matchList}" th:each="match : ${matchList}">
                         <li class="list-group-item" style="margin-bottom: 5px;">
                             <span>
-                                <b th:text="${#temporals.format(match.getMatchTime(), 'HH:mm')}"></b>
+                                <b th:text="${match.getMatchTime()}"></b>
                             </span>
                             <a th:text="${match.getMatchAddress()}" th:href="@{/match/detail(id=${match.getId()}, loginId=${#authentication.name})}"></a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -30,11 +47,11 @@
     /*<![CDATA[*/
     window.onload = function () {
         const message = [[${message}]];
-        if(message != null) {
+        if (message != null) {
             alert(message);
         }
     }
 
     /*]]>*/
 </script>
-    <div th:replace="fragments/footer :: footer" />
+<div th:replace="fragments/footer :: footer"/>

@@ -3,6 +3,7 @@ package practice.myproject.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.myproject.domain.Match;
@@ -15,6 +16,7 @@ import practice.myproject.repository.MemberRepository;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +29,11 @@ public class MatchService {
 
     public Match save(MatchDto matchDto, String loginId) {
 
-        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+//        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         Match match = Match.builder()
                 .matchAddress(matchDto.getMatchAddress())
                 .limitedPeople(matchDto.getLimitedPeople())
-                .matchTime(parseTime)
+                .matchTime(matchDto.getMatchTime())
                 .notice(matchDto.getNotice())
                 .createBy(loginId)
                 .createTime(LocalDateTime.now())
@@ -79,12 +81,10 @@ public class MatchService {
     @Transactional
     public Long updateMatch(Long id, MatchDto matchDto) {
 
-        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
         QMatch match1 = QMatch.match;
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(em, match1);
         long execute = jpaUpdateClause
-                .set(match1.matchTime, parseTime)
+                .set(match1.matchTime, matchDto.getMatchTime())
                 .set(match1.matchAddress, matchDto.getMatchAddress())
                 .set(match1.notice, matchDto.getNotice())
                 .set(match1.limitedPeople, matchDto.getLimitedPeople())
@@ -93,4 +93,17 @@ public class MatchService {
         return execute;
 
     }
+
+    public List<Match> findMatchList(String dateKey, Pageable pageable) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QMatch match = QMatch.match;
+
+        List<Match> matchList = queryFactory
+                .selectFrom(match)
+                .where(match.matchTime.contains(dateKey))
+                .fetch();
+        return matchList;
+    }
+
+
 }

@@ -21,7 +21,7 @@ public class Match {
 
     private int limitedPeople;  //제한 인원
     private String matchAddress;   //매칭 장소
-    private LocalDateTime matchTime;     //매칭 시간
+    private String matchTime;     //매칭 시간
     private String notice;  //공지사항, 한마디
 
     private String createBy;    //작성자
@@ -31,7 +31,7 @@ public class Match {
     private List<Member> members = new ArrayList<>();
 
     @Builder
-    public Match(Long id, int limitedPeople, String matchAddress, LocalDateTime matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
+    public Match(Long id, int limitedPeople, String matchAddress, String matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
         this.id = id;
         this.limitedPeople = limitedPeople;
         this.matchAddress = matchAddress;

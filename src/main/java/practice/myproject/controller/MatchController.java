@@ -35,13 +35,13 @@ public class MatchController {
     public ModelAndView matchList(ModelAndView mv, String message, String dateKey) {
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Object> dateArr = new ArrayList<>();
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 7; i++) {
             dateArr.add(now.plusDays(i));
         }
         Pageable pageable = PageRequest.of(0, 10, Sort.by("matchTime").ascending());
 
         if (dateKey != null) {
-            List<Match> matchList = matchService.findMatchList(dateKey, pageable);
+            Page<Match> matchList = matchRepository.findMatchList(dateKey, pageable);
             mv.addObject("matchList", matchList);
         } else {
             Page<Match> matchList = matchRepository.findAll(pageable);

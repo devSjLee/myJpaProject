@@ -94,16 +94,6 @@ public class MatchService {
 
     }
 
-    public List<Match> findMatchList(String dateKey, Pageable pageable) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMatch match = QMatch.match;
-
-        List<Match> matchList = queryFactory
-                .selectFrom(match)
-                .where(match.matchTime.contains(dateKey))
-                .fetch();
-        return matchList;
-    }
 
 
 }

@@ -1,6 +1,7 @@
 package practice.myproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MatchController {
 
     private final MatchService matchService;
@@ -33,6 +35,7 @@ public class MatchController {
 
     @GetMapping("/match/list")
     public ModelAndView matchList(ModelAndView mv, String message, String dateKey) {
+        log.info("리스트다!!");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Object> dateArr = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

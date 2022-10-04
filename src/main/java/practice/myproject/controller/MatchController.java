@@ -42,7 +42,11 @@ public class MatchController {
 
         if (dateKey != null) {
             Page<Match> matchList = matchRepository.findMatchList(dateKey, pageable);
-            mv.addObject("matchList", matchList);
+            if(matchList.getTotalPages() != 0) {
+                mv.addObject("matchList", matchList);
+            } else {
+                mv.addObject("matchList", null);
+            }
             mv.addObject("activeKey", dateKey);
         } else {
             Page<Match> matchList = matchRepository.findAll(pageable);

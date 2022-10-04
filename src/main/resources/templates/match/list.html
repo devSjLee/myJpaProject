@@ -34,8 +34,8 @@
 
                     </div>
                     <br>
-                    <div>
-                        <ul class="list-group" th:if="${matchList}" th:each="match : ${matchList}">
+                    <div th:if="${matchList}">
+                        <ul class="list-group" th:each="match : ${matchList}">
                             <li class="list-group-item" style="margin-bottom: 5px;">
                             <span>
                                 <b th:text="${match.getMatchTime()}"></b>
@@ -46,6 +46,9 @@
                                 <span th:text="${match.getMembers().size()}+'/'+${match.getLimitedPeople()}"></span>
                             </li>
                         </ul>
+                    </div>
+                    <div th:unless="${matchList}">
+                        <p style="text-align: center;">조회결과가 없습니다.</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +67,6 @@
         let url = new URL(href);
         let searchParams = url.searchParams;
         let dateKey = searchParams.get("dateKey");
-        console.log(dateKey);
         if(dateKey == activeKey) {
             $("#"+activeKey).addClass("active");
         }

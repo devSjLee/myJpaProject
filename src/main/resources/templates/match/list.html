@@ -44,6 +44,7 @@
                                    th:href="@{/match/detail(id=${match.getId()}, loginId=${#authentication.name})}"></a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span th:text="${match.getMembers().size()}+'/'+${match.getLimitedPeople()}"></span>
+                                <span th:if="(${match.getMembers().size()} / ${match.getLimitedPeople()}) >= 0.8" style="color: #b03e00">마감임박!!!</span>
                             </li>
                         </ul>
                     </div>

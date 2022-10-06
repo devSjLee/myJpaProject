@@ -20,7 +20,11 @@ public class Match {
     private Long id;
 
     private int limitedPeople;  //제한 인원
-    private String matchAddress;   //매칭 장소
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ground_id")
+    private Ground ground;   //매칭 장소
+
     private String matchTime;     //매칭 시간
     private String notice;  //공지사항, 한마디
 
@@ -31,10 +35,10 @@ public class Match {
     private List<Member> members = new ArrayList<>();
 
     @Builder
-    public Match(Long id, int limitedPeople, String matchAddress, String matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
+    public Match(Long id, int limitedPeople, Ground ground, String matchTime, String notice, String createBy, LocalDateTime createTime, List<Member> members) {
         this.id = id;
         this.limitedPeople = limitedPeople;
-        this.matchAddress = matchAddress;
+        this.ground = ground;
         this.matchTime = matchTime;
         this.notice = notice;
         this.createBy = createBy;

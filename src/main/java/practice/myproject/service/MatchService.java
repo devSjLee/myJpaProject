@@ -31,7 +31,7 @@ public class MatchService {
 
 //        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         Match match = Match.builder()
-                .matchAddress(matchDto.getMatchAddress())
+                .ground()
                 .limitedPeople(matchDto.getLimitedPeople())
                 .matchTime(matchDto.getMatchTime())
                 .notice(matchDto.getNotice())

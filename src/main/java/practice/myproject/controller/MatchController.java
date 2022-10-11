@@ -10,9 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import practice.myproject.domain.Ground;
 import practice.myproject.domain.Match;
 import practice.myproject.domain.MatchDto;
 import practice.myproject.domain.Member;
+import practice.myproject.repository.GroundRepository;
 import practice.myproject.repository.MatchRepository;
 import practice.myproject.repository.MemberRepository;
 import practice.myproject.service.MatchService;
@@ -31,6 +33,7 @@ public class MatchController {
     private final MatchService matchService;
     private final MatchRepository matchRepository;
     private final MemberRepository memberRepository;
+    private final GroundRepository groundRepository;
 
 
     @GetMapping("/match/list")
@@ -64,6 +67,10 @@ public class MatchController {
 
     @GetMapping("/match/createMatchForm")
     public ModelAndView createMatchForm(ModelAndView mv) {
+
+        List<Ground> findGround = groundRepository.findAll();
+
+        mv.addObject("groundList", findGround);
         mv.addObject("matchDto", new MatchDto());
         mv.setViewName("match/createMatchForm");
         return mv;
@@ -135,8 +142,10 @@ public class MatchController {
     public ModelAndView updateMatchForm(ModelAndView mv, @PathVariable("id") Long id) {
 
         Optional<Match> match = matchRepository.findById(id);
-        System.out.println("아이디: " + id);
-        System.out.println("아이디: " + match.get().getNotice());
+
+        List<Ground> findGround = groundRepository.findAll();
+
+        mv.addObject("groundList", findGround);
         mv.addObject("matchOne", match.get());
         mv.addObject("matchDto", new MatchDto());
         mv.setViewName("match/updateMatchForm");

@@ -1,11 +1,13 @@
 package practice.myproject.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Ground {
 
     @Id
@@ -28,9 +30,6 @@ public class Ground {
 
     @OneToOne(mappedBy = "ground")
     private Match match;
-
-
-
 
 
 }

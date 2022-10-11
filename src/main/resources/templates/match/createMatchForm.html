@@ -10,12 +10,15 @@
             <form action="/match/create" th:object="${matchDto}" method="post" class="form-inline">
             <table class="table">
 
+
                 <tr>
                     <td>장소</td>
                     <td>
                         <input type="hidden" name="loginId" th:value="${#authentication.name}">
-                        <input type="text" class="form-control" id="matchAddress" th:field="*{matchAddress}">
-                        <img src="/img/search.png" style="width: 50px;height: 50px;" id="searchAddress">
+                        <select th:field="*{groundId}">
+                            <option th:each="ground : ${groundList}" th:text="${ground.getAddress()+'  ('+ground.getGroundName()+')'}" th:value="${ground.getId()}">
+                            </option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -48,15 +51,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     window.onload = function(){
-        document.getElementById("searchAddress").addEventListener("click", function(){ //주소입력칸을 클릭하면
-            //카카오 지도 발생
-            new daum.Postcode({
-                oncomplete: function(data) { //선택시 입력값 세팅
-                    document.getElementById("matchAddress").value = data.address;
 
-                }
-            }).open();
-        });
 
         $( function() {
             $( ".datetimepicker" ).datetimepicker({

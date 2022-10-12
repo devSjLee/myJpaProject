@@ -14,8 +14,9 @@
                         <td>장소</td>
                         <td>
                             <input type="hidden" name="loginId" th:value="${#authentication.name}">
-                            <select th:field="*{groundId}" th:value="${matchOne.getGround().getId()}">
-                                <option th:each="ground : ${groundList}" th:text="${ground.getAddress()+'  ('+ground.getGroundName()+')'}" th:value="${ground.getId()}">
+                            <select class="form-select">
+                                <option th:each="ground : ${groundList}" th:text="${ground.getAddress()+'  ('+ground.getGroundName()+')'}"
+                                        th:value="${ground.getId()}" th:selected="${ground.getId()} == ${matchOne.getGround().getId()}">
                                 </option>
                             </select>
                         </td>

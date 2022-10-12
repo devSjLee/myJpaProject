@@ -11,53 +11,61 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <section class="page-section portfolio" id="portfolio" style="height: 700px;">
         <div class="container">
-            <form action="/match/attend" method="post" id="form">
-                <input type="hidden" name="loginId" th:value="${#authentication.name}">
-                <input type="hidden" name="id" th:value="${matchOne.getId()}">
+            <div id="map" style="width:55%;height:400px;display: inline-block;"></div>
+            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b11ae08d9eedb39cd452ad864b412fd8&libraries=services"></script>
+            <div style="display: inline-block;float: right;width: 40%;">
+                <form action="/match/attend" method="post" id="form">
+                    <input type="hidden" name="loginId" th:value="${#authentication.name}">
+                    <input type="hidden" name="id" th:value="${matchOne.getId()}">
 
-                <table class="table">
-                    <tr>
-                        <td>
-                            <b>인원수&nbsp;:&nbsp;</b>
-                            <p th:text="${matchOne.getMembers().size()}+'/'+${matchOne.getLimitedPeople()}"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>장소&nbsp;:&nbsp;</b>
-                            <p th:text="${matchOne.getGround().getAddress()}">></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>시간&nbsp;:&nbsp;</b>
-                            <p th:text="${matchOne.getMatchTime()}"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>공지사항&nbsp;:&nbsp;</b>
-                            <p th:text="${matchOne.getNotice()}"></p>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-            <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
-            <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기
-            </button>
-            <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
-            <form th:action="@{'/match/'+${matchOne.getId()}}" id="updateFrm" method="get" style="display: inline;">
-                <input type="hidden" name="_method" value="get">
-                <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
-                        onclick="updateMatch();">수정
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <b>인원수&nbsp;:&nbsp;</b>
+                                <p th:text="${matchOne.getMembers().size()}+'/'+${matchOne.getLimitedPeople()}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>장소&nbsp;:&nbsp;</b>
+                                <p th:text="${matchOne.getGround().getAddress()}">></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>시간&nbsp;:&nbsp;</b>
+                                <p th:text="${matchOne.getMatchTime()}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>공지사항&nbsp;:&nbsp;</b>
+                                <p th:text="${matchOne.getNotice()}"></p>
+                                <p th:text="${matchOne.getGround().getX()}"></p>
+                                <p th:text="${matchOne.getGround().getY()}"></p>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div>
+                <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
+                <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기
                 </button>
-            </form>
-            <form th:action="@{'/match/'+${matchOne.getId()}}" id="deleteFrm" method="post" style="display: inline;">
-                <input type="hidden" name="_method" value="delete">
-                <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
-                        onclick="deleteMatch();">삭제
-                </button>
-            </form>
+                <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
+                <form th:action="@{'/match/'+${matchOne.getId()}}" id="updateFrm" method="get" style="display: inline;">
+                    <input type="hidden" name="_method" value="get">
+                    <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
+                            onclick="updateMatch();">수정
+                    </button>
+                </form>
+                <form th:action="@{'/match/'+${matchOne.getId()}}" id="deleteFrm" method="post" style="display: inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button th:if="${#authentication.name.equals(createdBy)}" type="button" class="btn btn-primary"
+                            onclick="deleteMatch();">삭제
+                    </button>
+                </form>
+            </div>
         </div>
     </section>
 </div>
@@ -90,7 +98,49 @@
         }
     }
 
+    const x = [[${matchOne.getGround().getX()}]];
+    const y = [[${matchOne.getGround().getY()}]];
+    const groundName = [[${matchOne.getGround().getGroundName()}]];
+
+    var container = document.getElementById('map');
+    var options = {
+        center: new kakao.maps.LatLng(127.15342019955, 37.5025620035274),
+        level: 3
+    };
+
+    var map = new kakao.maps.Map(container, options);
+
+    var markerPosition  = new kakao.maps.LatLng(x, y);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        position: markerPosition
+    });
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+
+    var iwContent = '<div style="padding:5px;">'+groundName+'</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+        // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content : iwContent
+    });
+
+    // 마커에 마우스오버 이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, 'mouseover', function() {
+        // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+        infowindow.open(map, marker);
+    });
+
+    // 마커에 마우스아웃 이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, 'mouseout', function() {
+        // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+        infowindow.close();
+    });
+
     /*]]>*/
 
 </script>
+
 <div th:replace="fragments/footer :: footer"/>

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.myproject.domain.*;
+import practice.myproject.repository.GroundRepository;
 import practice.myproject.repository.MatchRepository;
 import practice.myproject.repository.MemberRepository;
 
@@ -21,6 +22,7 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
     private final MemberRepository memberRepository;
+    private final GroundRepository groundRepository;
     private final EntityManager em;
 
 
@@ -28,7 +30,23 @@ public class MatchService {
     public Match save(MatchDto matchDto, String loginId) {
 
 //        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        Ground ground = Ground.builder()
+                .x(matchDto.getX())
+                .y(matchDto.getY())
+                .address(matchDto.getAddress())
+                .groundName(matchDto.getGroundName())
+                .callNumber(matchDto.getCallNumber())
+                .showerYn(matchDto.getShowerYn())
+                .shoesYn(matchDto.getShoesYn())
+                .sportsWearYn(matchDto.getSportsWearYn())
+                .parkingYn(matchDto.getParkingYn())
+                .build();
+
+        Ground saveGround = groundRepository.save(ground);
+
         Match match = Match.builder()
+                .ground(saveGround)
                 .limitedPeople(matchDto.getLimitedPeople())
                 .matchTime(matchDto.getMatchTime())
                 .notice(matchDto.getNotice())
@@ -37,15 +55,6 @@ public class MatchService {
                 .build();
         Match match1 = matchRepository.save(match);
 
-        QMatch match2 = QMatch.match;
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        queryFactory
-                .update(match2)
-                .set(match2.ground.id, matchDto.getGroundId())
-                .where(match2.id.eq(match1.getId()))
-                .execute();
-        em.flush();
-        em.clear();
 
         return match1;
     }
@@ -93,7 +102,6 @@ public class MatchService {
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(em, match1);
         long execute = jpaUpdateClause
                 .set(match1.matchTime, matchDto.getMatchTime())
-                .set(match1.ground.id, matchDto.getGroundId())
                 .set(match1.notice, matchDto.getNotice())
                 .set(match1.limitedPeople, matchDto.getLimitedPeople())
                 .where(match1.id.eq(id))

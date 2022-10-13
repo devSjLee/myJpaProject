@@ -142,6 +142,8 @@ public class MatchController {
     public ModelAndView updateMatchForm(ModelAndView mv, @PathVariable("id") Long id) {
 
         Optional<Match> match = matchRepository.findById(id);
+        System.out.println("아이디 오냐"+match.get().getGround().getCallNumber());
+        System.out.println("아이디 오냐"+match.get().getGround().getGroundName());
 
         List<Ground> findGround = groundRepository.findAll();
 

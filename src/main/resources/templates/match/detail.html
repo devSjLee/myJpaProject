@@ -11,8 +11,8 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <section class="page-section portfolio" id="portfolio" style="height: 700px;">
         <div class="container">
-            <div id="map" style="width:55%;height:400px;display: inline-block;"></div>
-            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b11ae08d9eedb39cd452ad864b412fd8&libraries=services"></script>
+            <div id="map" style="width:55%;height:400px;display: inline-block;position:relative;overflow:hidden;"></div>
+            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d62f3451029bf4fb668ec6fbfb50ce37&libraries=services"></script>
             <div style="display: inline-block;float: right;width: 40%;">
                 <form action="/match/attend" method="post" id="form">
                     <input type="hidden" name="loginId" th:value="${#authentication.name}">
@@ -41,8 +41,6 @@
                             <td>
                                 <b>공지사항&nbsp;:&nbsp;</b>
                                 <p th:text="${matchOne.getNotice()}"></p>
-                                <p th:text="${matchOne.getGround().getX()}"></p>
-                                <p th:text="${matchOne.getGround().getY()}"></p>
                             </td>
                         </tr>
                     </table>
@@ -104,13 +102,15 @@
 
     var container = document.getElementById('map');
     var options = {
-        center: new kakao.maps.LatLng(127.15342019955, 37.5025620035274),
+        center: new kakao.maps.LatLng(y, x),
         level: 3
     };
 
     var map = new kakao.maps.Map(container, options);
 
-    var markerPosition  = new kakao.maps.LatLng(x, y);
+    //126.964741503485
+    //37.5297718014452
+    var markerPosition  = new kakao.maps.LatLng(y, x);
 
     // 마커를 생성합니다
     var marker = new kakao.maps.Marker({

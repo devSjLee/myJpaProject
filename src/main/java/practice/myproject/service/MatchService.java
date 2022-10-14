@@ -3,7 +3,6 @@ package practice.myproject.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.myproject.domain.*;
@@ -13,8 +12,6 @@ import practice.myproject.repository.MemberRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -96,7 +93,22 @@ public class MatchService {
     }
 
     @Transactional
-    public Long updateMatch(Long id, MatchDto matchDto) {
+    public Long updateMatch(Long id, MatchDto matchDto, Long groundId) {
+
+        QGround ground = QGround.ground;
+        JPAUpdateClause jpaUpdateClause2 = new JPAUpdateClause(em, ground);
+        jpaUpdateClause2
+                .set(ground.groundName, matchDto.getGroundName())
+                .set(ground.address, matchDto.getAddress())
+                .set(ground.callNumber, matchDto.getCallNumber())
+                .set(ground.parkingYn, matchDto.getParkingYn())
+                .set(ground.shoesYn, matchDto.getShoesYn())
+                .set(ground.showerYn, matchDto.getShowerYn())
+                .set(ground.sportsWearYn, matchDto.getSportsWearYn())
+                .set(ground.x, matchDto.getX())
+                .set(ground.y, matchDto.getY())
+                .where(ground.id.eq(groundId))
+                .execute();
 
         QMatch match1 = QMatch.match;
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(em, match1);
@@ -106,6 +118,9 @@ public class MatchService {
                 .set(match1.limitedPeople, matchDto.getLimitedPeople())
                 .where(match1.id.eq(id))
                 .execute();
+
+        em.flush();
+        em.clear();
         return execute;
 
     }

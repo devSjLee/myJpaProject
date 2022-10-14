@@ -155,9 +155,10 @@ public class MatchController {
     }
 
     @PutMapping("/match/{id}")
-    public ModelAndView updateMatch(ModelAndView mv, @PathVariable("id") Long id, MatchDto matchDto, String loginId, RedirectAttributes redirectAttributes) {
+    public ModelAndView updateMatch(ModelAndView mv, @PathVariable("id") Long id, MatchDto matchDto, String loginId, RedirectAttributes redirectAttributes
+    , Long groundId) {
 
-        Long result = matchService.updateMatch(id, matchDto);
+        Long result = matchService.updateMatch(id, matchDto, groundId);
         if (result != null) {
             redirectAttributes.addAttribute("id", id);
             redirectAttributes.addAttribute("loginId", loginId);

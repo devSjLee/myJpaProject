@@ -98,13 +98,13 @@
                 <tr>
                     <td>샤워시설</td>
                     <td>
-                        <input type="radio" class="form-check-input" id="showerYn" name="showerYn[]" th:text="${'Y'}" value="Y">
+                        <input type="radio" class="form-check-input" id="showerYn" name="showerYn[]" th:text="${'Y'}" value="Y" checked>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" class="form-check-input" id="showerYn2" name="showerYn[]" th:text="${'N'}" value="N">
                     </td>
                     <td>운동복</td>
                     <td>
-                        <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'Y'}" value="Y">
+                        <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'Y'}" value="Y" checked>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'N'}" value="N">
                     </td>
@@ -112,13 +112,13 @@
                 <tr>
                     <td>풋살화대여</td>
                     <td>
-                        <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'Y'}" value="Y">
+                        <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'Y'}" value="Y" checked>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'N'}" value="N">
                     </td>
                     <td>주차가능</td>
                     <td>
-                        <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'Y'}" value="Y">
+                        <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'Y'}" value="Y" checked>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'N'}" value="N">
                     </td>
@@ -275,7 +275,7 @@
                     var geocoder = new kakao.maps.services.Geocoder();
 
                     // 주소로 좌표를 검색합니다
-                    geocoder.addressSearch("서울 용산구 한강대로23길 55", function(result, status) {
+                    geocoder.addressSearch(places.address_name, function(result, status) {
 
                         // 정상적으로 검색이 완료됐으면
                         if (status === kakao.maps.services.Status.OK) {

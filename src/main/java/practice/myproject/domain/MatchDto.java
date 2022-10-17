@@ -15,6 +15,7 @@ public class MatchDto {
     private Double x;   //x좌표
     private Double y;   //y좌표
 
+    private String placeUrl;     //매칭장소 url주소
     private String address;     //매칭장소
     private String groundName;      //구장명
     private String callNumber;      //연락처

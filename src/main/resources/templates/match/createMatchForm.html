@@ -72,6 +72,7 @@
                         <input type="hidden" name="loginId" th:value="${#authentication.name}">
                         <input type="hidden" th:field="*{x}" value="">
                         <input type="hidden" th:field="*{y}" value="">
+                        <input type="hidden" th:field="*{placeUrl}" value="">
 
                         <input type="text" class="form-control" th:field="*{address}">
                     </td>
@@ -158,7 +159,7 @@
                 ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
                 ,allowTimes:[
                     '10:00', '12:00', '14:00',
-                    '16:00', '18:00', '20:00', '22:00'
+                    '16:00', '18:00', '20:00', '22:00', '24:00'
                 ]
             });
         } );
@@ -293,6 +294,7 @@
                     document.getElementById('address').value = places.address_name;
                     document.getElementById('groundName').value = places.place_name;
                     document.getElementById('callNumber').value = places.phone;
+                    document.getElementById('placeUrl').value = places.place_url;
                 };
             })(marker, places[i]);
 

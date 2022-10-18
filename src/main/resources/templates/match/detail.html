@@ -5,8 +5,8 @@
     p {
         display: inline;
     }
-    ul li {float: left;width: 40%;list-style: none;margin-left: 20px;}
-    ul li img {width: 20px;}
+    #infoUl li {float: left;width: 40%;list-style: none;margin-left: 20px;}
+    #infoUl li img {width: 20px;}
 </style>
 <body>
 <div class="container">
@@ -24,7 +24,7 @@
                         <h4>경기 정보</h4>
                     </div>
                     <div>
-                        <ul>
+                        <ul id="infoUl">
                             <li id="parking">
                                 <img src="/img/parking.png">
                                 <p>주차 공간</p>
@@ -51,6 +51,11 @@
                 </div>
                 <div style="margin-bottom: 10px;">
                     <p th:text="${matchOne.getGround().getAddress()}"></p>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <p th:text="${matchOne.getGround().getGroundName()}+' ('"></p>
+                    <a th:href="${matchOne.getGround().getPlaceUrl()}" target="_blank" th:text="${matchOne.getGround().getPlaceUrl()}"></a>
+                    <p th:text="')'"></p>
                 </div>
                 <div>
                     <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>

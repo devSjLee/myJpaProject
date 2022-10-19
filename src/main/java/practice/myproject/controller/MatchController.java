@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,14 +39,14 @@ public class MatchController {
 
 
     @GetMapping("/match/list")
-    public ModelAndView matchList(ModelAndView mv, String message, String dateKey) {
+    public ModelAndView matchList(ModelAndView mv, String message, String dateKey,
+                                  @PageableDefault Pageable pageable) {
         log.info("리스트다!!");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Object> dateArr = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             dateArr.add(now.plusDays(i));
         }
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("matchTime").ascending());
 
         if (dateKey != null) {
             Page<Match> matchList = matchRepository.findMatchList(dateKey, pageable);
@@ -55,7 +57,7 @@ public class MatchController {
             }
             mv.addObject("activeKey", dateKey);
         } else {
-            Page<Match> matchList = matchRepository.findAll(pageable);
+            Page<Match> matchList = matchService.findMatchList2(pageable);
             mv.addObject("matchList", matchList);
         }
 

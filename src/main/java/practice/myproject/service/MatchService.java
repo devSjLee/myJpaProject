@@ -3,6 +3,10 @@ package practice.myproject.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.myproject.domain.*;
@@ -128,5 +132,10 @@ public class MatchService {
     }
 
 
+    public Page<Match> findMatchList2(Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber()-1);
+        pageable = PageRequest.of(page, 3, Sort.by("matchTime").ascending());
 
+        return matchRepository.findAll(pageable);
+    }
 }

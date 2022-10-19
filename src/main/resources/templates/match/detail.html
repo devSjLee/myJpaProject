@@ -53,9 +53,9 @@
                     <p th:text="${matchOne.getGround().getAddress()}"></p>
                 </div>
                 <div style="margin-bottom: 10px;">
-                    <p th:text="${matchOne.getGround().getGroundName()}+' ('"></p>
-                    <a th:href="${matchOne.getGround().getPlaceUrl()}" target="_blank" th:text="${matchOne.getGround().getPlaceUrl()}"></a>
-                    <p th:text="')'"></p>
+                    <p th:text="${matchOne.getGround().getGroundName()}"></p>
+                    <a th:if="${matchOne.getGround().getPlaceUrl()}" th:href="${matchOne.getGround().getPlaceUrl()}" target="_blank" th:text="'('+${matchOne.getGround().getPlaceUrl()}"></a>
+                    <p th:if="${matchOne.getGround().getPlaceUrl()}" th:text="')'"></p>
                 </div>
                 <div>
                     <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>

@@ -138,4 +138,10 @@ public class MatchService {
 
         return matchRepository.findAll(pageable);
     }
+
+    public Page<Match> findMatchList(String dateKey, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber()-1);
+        pageable = PageRequest.of(page, 3, Sort.by("matchTime").ascending());
+        return matchRepository.findMatchList(dateKey, pageable);
+    }
 }

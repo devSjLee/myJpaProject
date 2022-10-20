@@ -39,9 +39,10 @@ public class MatchController {
 
 
     @GetMapping("/match/list")
-    public ModelAndView matchList(ModelAndView mv, String message, String dateKey,
+    public ModelAndView matchList(ModelAndView mv, String message, String dateKey, String keyWord,
                                   @PageableDefault Pageable pageable) {
         log.info("리스트다!!");
+        System.out.println("gdgdgd: "+ keyWord);
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Object> dateArr = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

@@ -60,7 +60,7 @@
             </div>
         </div>
     </section>
-    <nav style="text-align: center;">
+    <nav style="text-align: center;" th:if="${matchList}">
         <ul class="pagination justify-content-center" th:with="start=${T(java.lang.Math).floor(matchList.number/10)*10 + 1}, last=(${start + 9 < matchList.totalPages ? start + 9 : matchList.totalPages})">
             <li class="page-item">
                 <a class="page-link" th:href="@{/match/list(page=1)}" aria-label="First">

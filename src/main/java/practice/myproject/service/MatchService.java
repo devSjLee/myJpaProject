@@ -1,12 +1,11 @@
 package practice.myproject.service;
 
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.myproject.domain.*;
@@ -16,6 +15,7 @@ import practice.myproject.repository.MemberRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -139,9 +139,40 @@ public class MatchService {
         return matchRepository.findAll(pageable);
     }
 
-    public Page<Match> findMatchList(String dateKey, Pageable pageable) {
+    QMatch matchDynamic = QMatch.match;     //날짜, 키워드 검색용 Q-type match
+    public Page<Match> findMatchList(String dateKey, String keyWord, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber()-1);
         pageable = PageRequest.of(page, 3, Sort.by("matchTime").ascending());
-        return matchRepository.findMatchList(dateKey, pageable);
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        List<Match> content = queryFactory
+                .selectFrom(matchDynamic)
+                .where(dateLike(dateKey), searchLike(keyWord))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = queryFactory
+                .select(matchDynamic.count())
+                .from(matchDynamic)
+                .where(dateLike(dateKey), searchLike(keyWord))
+                .fetchOne();
+
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression searchLike(String keyWord) {
+        if (keyWord == null) {
+            return null;
+        }
+        return matchDynamic.ground.address.contains(keyWord);
+    }
+
+    private BooleanExpression dateLike(String dateKey) {
+        if (dateKey == null) {
+            return null;
+        }
+        return matchDynamic.matchTime.contains(dateKey);
     }
 }

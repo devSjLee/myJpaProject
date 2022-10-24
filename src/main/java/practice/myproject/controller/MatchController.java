@@ -49,17 +49,13 @@ public class MatchController {
             dateArr.add(now.plusDays(i));
         }
 
+        Page<Match> matchList = matchService.findMatchList(dateKey, keyWord, pageable);
+        mv.addObject("matchList", matchList);
+        if(matchList.getTotalPages() == 0) {
+            mv.addObject("matchList", null);
+        }
         if (dateKey != null) {
-            Page<Match> matchList = matchService.findMatchList(dateKey, pageable);
-            if(matchList.getTotalPages() != 0) {
-                mv.addObject("matchList", matchList);
-            } else {
-                mv.addObject("matchList", null);
-            }
             mv.addObject("activeKey", dateKey);
-        } else {
-            Page<Match> matchList = matchService.findMatchList2(pageable);
-            mv.addObject("matchList", matchList);
         }
 
         mv.addObject("message", message);

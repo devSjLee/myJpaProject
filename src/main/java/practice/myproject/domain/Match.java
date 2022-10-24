@@ -21,7 +21,7 @@ public class Match {
 
     private int limitedPeople;  //제한 인원
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ground_id")
     private Ground ground;   //매칭 장소
 

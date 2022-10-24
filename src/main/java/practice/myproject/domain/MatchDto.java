@@ -19,8 +19,6 @@ public class MatchDto {
     private String address;     //매칭장소
     private String groundName;      //구장명
     private String callNumber;      //연락처
-    private String showerYn;   //샤워시설 여부
-    private String sportsWearYn;   //운동복대여 여부
-    private String shoesYn;   //풋살화대여 여부
-    private String parkingYn;   //주차가능 여부
+
+    private String groundKey;   //ground 고유 number
 }

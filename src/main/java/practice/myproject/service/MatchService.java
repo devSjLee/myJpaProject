@@ -30,40 +30,81 @@ public class MatchService {
     @Transactional
     public Match save(MatchDto matchDto, String loginId) {
 
-//        LocalDateTime parseTime = LocalDateTime.parse(matchDto.getMatchTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        QMatch match2 = QMatch.match;
 
-        Ground ground = Ground.builder()
-                .x(matchDto.getX())
-                .y(matchDto.getY())
-                .address(matchDto.getAddress())
-                .placeUrl(matchDto.getPlaceUrl())
-                .groundName(matchDto.getGroundName())
-                .callNumber(matchDto.getCallNumber())
-                .showerYn(matchDto.getShowerYn())
-                .shoesYn(matchDto.getShoesYn())
-                .sportsWearYn(matchDto.getSportsWearYn())
-                .parkingYn(matchDto.getParkingYn())
-                .build();
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 
-        Ground saveGround = groundRepository.save(ground);
+        //기존 ground 테이블에 있는지 확인
+        Integer result = queryFactory
+                .selectOne()
+                .from(match2)
+                .where(match2.ground.groundKey.eq(matchDto.getGroundKey()))
+                .fetchFirst();
 
-        Match match = Match.builder()
-                .ground(saveGround)
-                .limitedPeople(matchDto.getLimitedPeople())
-                .matchTime(matchDto.getMatchTime())
-                .notice(matchDto.getNotice())
-                .createBy(loginId)
-                .createTime(LocalDateTime.now())
-                .build();
-        Match match1 = matchRepository.save(match);
+        if (result == null) {
+            Ground ground = Ground.builder()
+                    .x(matchDto.getX())
+                    .y(matchDto.getY())
+                    .address(matchDto.getAddress())
+                    .placeUrl(matchDto.getPlaceUrl())
+                    .groundName(matchDto.getGroundName())
+                    .callNumber(matchDto.getCallNumber())
+                    .showerYn("Y")
+                    .shoesYn("Y")
+                    .sportsWearYn("Y")
+                    .parkingYn("Y")
+                    .groundKey(matchDto.getGroundKey())
+                    .build();
 
+            Ground saveGround = groundRepository.save(ground);
 
-        return match1;
+            Match match = Match.builder()
+                    .ground(saveGround)
+                    .limitedPeople(matchDto.getLimitedPeople())
+                    .matchTime(matchDto.getMatchTime())
+                    .notice(matchDto.getNotice())
+                    .createBy(loginId)
+                    .createTime(LocalDateTime.now())
+                    .build();
+            Match match1 = matchRepository.save(match);
+            return match1;
+        } else {
+            QGround ground = QGround.ground;
+            JPAUpdateClause jpaUpdateClause2 = new JPAUpdateClause(em, ground);
+            jpaUpdateClause2
+                    .set(ground.groundName, matchDto.getGroundName())
+                    .set(ground.address, matchDto.getAddress())
+                    .set(ground.callNumber, matchDto.getCallNumber())
+                    .set(ground.placeUrl, matchDto.getPlaceUrl())
+                    .set(ground.x, matchDto.getX())
+                    .set(ground.y, matchDto.getY())
+                    .where(ground.groundKey.eq(matchDto.getGroundKey()))
+                    .execute();
+
+            em.flush();
+            em.clear();
+
+            Ground ground1 = queryFactory
+                    .selectFrom(ground)
+                    .where(ground.groundKey.eq(matchDto.getGroundKey()))
+                    .fetchOne();
+
+            Match match = Match.builder()
+                    .ground(ground1)
+                    .limitedPeople(matchDto.getLimitedPeople())
+                    .matchTime(matchDto.getMatchTime())
+                    .notice(matchDto.getNotice())
+                    .createBy(loginId)
+                    .createTime(LocalDateTime.now())
+                    .build();
+            Match match1 = matchRepository.save(match);
+            return match1;
+        }
+
     }
 
     @Transactional
     public void matchAttend(String loginId, Long id) {
-
 
         QMember member1 = QMember.member;
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -106,10 +147,6 @@ public class MatchService {
                 .set(ground.groundName, matchDto.getGroundName())
                 .set(ground.address, matchDto.getAddress())
                 .set(ground.callNumber, matchDto.getCallNumber())
-                .set(ground.parkingYn, matchDto.getParkingYn())
-                .set(ground.shoesYn, matchDto.getShoesYn())
-                .set(ground.showerYn, matchDto.getShowerYn())
-                .set(ground.sportsWearYn, matchDto.getSportsWearYn())
                 .set(ground.placeUrl, matchDto.getPlaceUrl())
                 .set(ground.x, matchDto.getX())
                 .set(ground.y, matchDto.getY())
@@ -133,16 +170,17 @@ public class MatchService {
 
 
     public Page<Match> findMatchList2(Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber()-1);
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, 3, Sort.by("matchTime").ascending());
 
         return matchRepository.findAll(pageable);
     }
 
     QMatch matchDynamic = QMatch.match;     //날짜, 키워드 검색용 Q-type match
+
     public Page<Match> findMatchList(String dateKey, String keyWord, Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber()-1);
-        pageable = PageRequest.of(page, 3, Sort.by("matchTime").ascending());
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, 7, Sort.by("matchTime").ascending());
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         List<Match> content = queryFactory
@@ -150,6 +188,7 @@ public class MatchService {
                 .where(dateLike(dateKey), searchLike(keyWord))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(matchDynamic.matchTime.asc())
                 .fetch();
 
         Long total = queryFactory

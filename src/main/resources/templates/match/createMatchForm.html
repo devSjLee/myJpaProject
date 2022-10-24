@@ -73,6 +73,7 @@
                         <input type="hidden" th:field="*{x}" value="">
                         <input type="hidden" th:field="*{y}" value="">
                         <input type="hidden" th:field="*{placeUrl}" value="">
+                        <input type="hidden" th:field="*{groundKey}" value="">
 
                         <input type="text" class="form-control" th:field="*{address}">
                     </td>
@@ -96,34 +97,7 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <td>샤워시설</td>
-                    <td>
-                        <input type="radio" class="form-check-input" id="showerYn" name="showerYn[]" th:text="${'Y'}" value="Y" checked>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" class="form-check-input" id="showerYn2" name="showerYn[]" th:text="${'N'}" value="N">
-                    </td>
-                    <td>운동복</td>
-                    <td>
-                        <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'Y'}" value="Y" checked>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'N'}" value="N">
-                    </td>
-                </tr>
-                <tr>
-                    <td>풋살화대여</td>
-                    <td>
-                        <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'Y'}" value="Y" checked>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'N'}" value="N">
-                    </td>
-                    <td>주차가능</td>
-                    <td>
-                        <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'Y'}" value="Y" checked>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'N'}" value="N">
-                    </td>
-                </tr>
+
 
                 <tr>
                     <td>시간</td>
@@ -295,6 +269,7 @@
                     document.getElementById('groundName').value = places.place_name;
                     document.getElementById('callNumber').value = places.phone;
                     document.getElementById('placeUrl').value = places.place_url;
+                    document.getElementById('groundKey').value = places.id;
                 };
             })(marker, places[i]);
 

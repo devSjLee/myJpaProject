@@ -73,6 +73,8 @@
                             <input type="hidden" name="loginId" th:value="${#authentication.name}">
                             <input type="hidden" id="x" name="x" th:value="${matchOne.getGround().getX()}">
                             <input type="hidden" id="y" name="y" th:value="${matchOne.getGround().getY()}">
+                            <input type="hidden" id="placeUrl" name="placeUrl" th:value="${matchOne.getGround().getPlaceUrl()}">
+                            <input type="hidden" id="groundKey" name="groundKey" th:value="${matchOne.getGround().getGroundKey()}">
                             <input type="hidden" name="groundId" th:value="${matchOne.getGround().getId()}">
 
                             <input type="text" class="form-control" id="address" name="address" th:value="${matchOne.getGround().getAddress()}">
@@ -97,42 +99,7 @@
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <td>샤워시설</td>
-                        <td>
-                            <input type="radio" class="form-check-input" id="showerYn" name="showerYn[]" th:text="${'Y'}" value="Y"
-                                   th:checked="${matchOne.getGround().getShowerYn() == 'Y'}">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" id="showerYn2" name="showerYn[]" th:text="${'N'}" value="N"
-                                   th:checked="${matchOne.getGround().getShowerYn() == 'N'}">
-                        </td>
-                        <td>운동복</td>
-                        <td>
-                            <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'Y'}" value="Y"
-                                   th:checked="${matchOne.getGround().getSportsWearYn() == 'Y'}">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" name="sportsWearYn[]" th:text="${'N'}" value="N"
-                                   th:checked="${matchOne.getGround().getSportsWearYn() == 'N'}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>풋살화대여</td>
-                        <td>
-                            <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'Y'}" value="Y"
-                                   th:checked="${matchOne.getGround().getShoesYn() == 'Y'}">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" name="shoesYn[]" th:text="${'N'}" value="N"
-                                   th:checked="${matchOne.getGround().getShoesYn() == 'N'}">
-                        </td>
-                        <td>주차가능</td>
-                        <td>
-                            <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'Y'}" value="Y"
-                                   th:checked="${matchOne.getGround().getParkingYn() == 'Y'}">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" name="parkingYn[]" th:text="${'N'}" value="N"
-                                   th:checked="${matchOne.getGround().getParkingYn() == 'N'}">
-                        </td>
-                    </tr>
+
 
                     <tr>
                         <td>시간</td>
@@ -303,6 +270,8 @@
                     document.getElementById('address').value = places.address_name;
                     document.getElementById('groundName').value = places.place_name;
                     document.getElementById('callNumber').value = places.phone;
+                    document.getElementById('placeUrl').value = places.place_url;
+                    document.getElementById('groundKey').value = places.id;
                 };
             })(marker, places[i]);
 

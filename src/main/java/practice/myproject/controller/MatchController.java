@@ -59,6 +59,7 @@ public class MatchController {
         }
 
         mv.addObject("message", message);
+        mv.addObject("keyWord", keyWord);
         mv.addObject("dateArr", dateArr);
         mv.setViewName("match/list");
         return mv;
@@ -67,9 +68,6 @@ public class MatchController {
     @GetMapping("/match/createMatchForm")
     public ModelAndView createMatchForm(ModelAndView mv) {
 
-        List<Ground> findGround = groundRepository.findAll();
-
-        mv.addObject("groundList", findGround);
         mv.addObject("matchDto", new MatchDto());
         mv.setViewName("match/createMatchForm");
         return mv;

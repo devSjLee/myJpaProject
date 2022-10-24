@@ -16,7 +16,7 @@
     <section class="page-section portfolio" id="portfolio">
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-12" style="margin-bottom: 10px;">
                     <h1 style="display: inline">매칭 리스트</h1>
                     <span><a th:href="@{/match/createMatchForm}" style="float:right;">매칭만들기</a></span>
                 </div>
@@ -31,12 +31,15 @@
                                 </a>
                             </li>
                         </ul>
-                        <form action="/match/list" method="get" id="form">
+                    </div>
+                    <div class="col-xs-3" style="display: inline-block;width: 400px;margin: 10px 0px 10px 0px;">
+                        <form action="/match/list" method="get" id="form" style="display: flex">
                             <input type="hidden" id="dateKey" name="dateKey" value="">
-                            <input type="text" class="form-control" name="keyWord" style="margin-right: 10px;">
+                            <input type="text" class="form-control" name="keyWord" style="margin-right: 10px;" placeholder="지역명 검색 ex) 서울, 경기, 의정부, 별내 ..." th:value="${keyWord}">
                             <input type="submit" value="검색">
                         </form>
-                    </div>
+                     </div>
+
 
                     <br>
                     <div th:if="${matchList}">

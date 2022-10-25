@@ -112,6 +112,7 @@ public class MatchController {
 
     @PostMapping("/match/attend")
     public ModelAndView matchAttend(ModelAndView mv, String loginId, Long id, RedirectAttributes redirectAttributes) {
+        log.info("매칭 참여!!");
         //리다이렉트시 필요한 공통 변수
         redirectAttributes.addAttribute("id", id);
         redirectAttributes.addAttribute("loginId", loginId);

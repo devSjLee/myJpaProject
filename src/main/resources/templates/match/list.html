@@ -43,6 +43,9 @@
 
                     <br>
                     <div th:if="${matchList}">
+                        <form action="/match/attend" method="post" id="form2">
+                            <input type="hidden" name="loginId" th:value="${#authentication.name}">
+                            <input type="hidden" id="id" name="id" value="">
                         <ul class="list-group" th:each="match : ${matchList}">
                             <li class="list-group-item" style="margin-bottom: 5px;">
                             <span>
@@ -52,9 +55,21 @@
                                    th:href="@{/match/detail(id=${match.getId()}, loginId=${#authentication.name})}"></a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span th:text="${match.getMembers().size()}+'/'+${match.getLimitedPeople()}"></span>
-                                <span th:if="(${match.getMembers().size()} / ${match.getLimitedPeople()}) >= 0.8" style="color: #b03e00">마감임박!!!</span>
+
+                                <button th:if="(${match.getMembers().size()} / ${match.getLimitedPeople()}) >= 0.8"
+                                        style="float: right;"
+                                        type="button" class="btn btn-danger" th:id="${match.getId()}" th:onclick="checkMatch(this.getAttribute('id'))">마감임박!!
+                                </button>
+                                <button th:if="(${match.getMembers().size()} / ${match.getLimitedPeople()}) < 0.8"
+                                        style="float: right;"
+                                        type="button" class="btn btn-primary" th:id="${match.getId()}" th:onclick="checkMatch(this.getAttribute('id'))">신청하기
+                                </button>
+
+                                <button th:if="${match.getMembers().size()} == ${match.getLimitedPeople()}" style="float: right;opacity: 50%;"
+                                        type="button" class="btn btn-primary" disabled>마감</button>
                             </li>
                         </ul>
+                        </form>
                     </div>
                     <div th:unless="${matchList}">
                         <p style="text-align: center;">조회결과가 없습니다.</p>
@@ -111,6 +126,15 @@
             $("#"+activeKey).addClass("active");
         }
         document.getElementById('dateKey').value = dateKey;
+    }
+
+    function checkMatch(matchId) {
+        if (confirm("매칭에 참여하시겠습니까?? (기존에 가입된 매칭이 있는 경우 자동 탈퇴됩니다.)")) {
+            document.getElementById('id').value = matchId;
+            document.getElementById('form2').submit();
+        } else {
+            return false;
+        }
     }
 
 

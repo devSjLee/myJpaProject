@@ -58,9 +58,16 @@
                     <p th:if="${matchOne.getGround().getPlaceUrl()}" th:text="')'"></p>
                 </div>
                 <div>
-                    <button th:if="${attendedId}" type="button" class="btn btn-primary" style="display: none;">이미가입</button>
-                    <button th:unless="${attendedId}" type="button" class="btn btn-primary" onclick="checkMatch();">신청하기
+
+                    <button th:if="(${matchOne.getMembers().size()} / ${matchOne.getLimitedPeople()}) >= 0.8"
+                            type="button" class="btn btn-danger" onclick="checkMatch()">마감임박!!
                     </button>
+                    <button th:if="(${matchOne.getMembers().size()} / ${matchOne.getLimitedPeople()}) < 0.8"
+                            type="button" class="btn btn-primary" onclick="checkMatch()">신청하기
+                    </button>
+
+                    <button th:if="${matchOne.getMembers().size()} == ${matchOne.getLimitedPeople()}" style="opacity: 50%;"
+                            type="button" class="btn btn-primary" disabled>마감</button>
                     <button type="button" class="btn btn-primary" onclick="location.href='/match/list'">목록</button>
                     <form th:action="@{'/match/'+${matchOne.getId()}}" id="updateFrm" method="get" style="display: inline;">
                         <input type="hidden" name="_method" value="get">

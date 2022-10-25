@@ -48,7 +48,7 @@
                             <span>
                                 <b th:text="${match.getMatchTime()}"></b>
                             </span>
-                                <a th:text="${match.getGround().getAddress()}"
+                                <a th:text="${match.getGround().getAddress()}+' ('+${match.getGround().getGroundName()}+')'"
                                    th:href="@{/match/detail(id=${match.getId()}, loginId=${#authentication.name})}"></a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span th:text="${match.getMembers().size()}+'/'+${match.getLimitedPeople()}"></span>

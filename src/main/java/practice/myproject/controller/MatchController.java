@@ -41,8 +41,7 @@ public class MatchController {
     @GetMapping("/match/list")
     public ModelAndView matchList(ModelAndView mv, String message, String dateKey, String keyWord,
                                   @PageableDefault Pageable pageable) {
-        log.info("리스트다!!");
-        System.out.println("gdgdgd: "+ keyWord);
+        log.info("리스트 페이지 호출");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Object> dateArr = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -50,6 +49,7 @@ public class MatchController {
         }
 
         Page<Match> matchList = matchService.findMatchList(dateKey, keyWord, pageable);
+        log.info("리스트 페이징, 동적쿼리 Page 객체로 정상 반환");
         mv.addObject("matchList", matchList);
         if(matchList.getTotalPages() == 0) {
             mv.addObject("matchList", null);
@@ -76,10 +76,12 @@ public class MatchController {
     @PostMapping("/match/create")
     public ModelAndView createMatch(ModelAndView mv, MatchDto matchDto, String loginId) {
         Match match = matchService.save(matchDto, loginId);
+        log.info("매칭 생성 완료!!");
 
         //매칭만든사람 자동으로 해당 매칭에 가입
         System.out.println("이게뭐지: " + loginId);
         matchService.matchAttend(loginId, match.getId());
+        log.info("매칭생성자 해당매칭에 자동가입완료!!");
 
         mv.setViewName("redirect:/match/list");
         return mv;

@@ -42,7 +42,6 @@ public class MemberController {
 
     @PostMapping("/loginProc")
     public ModelAndView login(ModelAndView mv, MemberLoginDto memberLoginDto) {
-        System.out.println("타냐");
         mv.setViewName("index");
 
         return mv;

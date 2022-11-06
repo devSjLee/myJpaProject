@@ -1,6 +1,7 @@
 package practice.myproject.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
@@ -41,9 +43,9 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("username = " + username);
-        Optional<Member> findMember = memberRepository.findByLoginId(username);
-        findMember.orElseThrow(() -> new UsernameNotFoundException("해당회원이 존재하지 않습니다."));
-        return new CustomDetails(findMember.get());
+            log.info(username+"님이 로그인 시도");
+            Optional<Member> findMember = memberRepository.findByLoginId(username);
+            findMember.orElseThrow(() -> new UsernameNotFoundException("해당회원이 존재하지 않습니다."));
+            return new CustomDetails(findMember.get());
     }
 }

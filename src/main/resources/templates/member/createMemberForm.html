@@ -29,14 +29,14 @@
             </div>
             <div class="form-group">
                 <label th:for="name">비밀번호 확인</label>
-                <input type="password" id="pwChk" onchange="pwCheck(this);" placeholder="" th:class="form-control">
+                <input type="password" id="pwChk" onkeyup="pwCheck(this);" placeholder="" th:class="form-control">
                 <span id="pwWord"></span>
             </div>
             <div class="form-group">
                 <label th:for="name">이름</label>
                 <input type="text" th:field="*{name}" placeholder="이름을 입력하세요"
                        th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
-                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="name"></p>
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="fieldError"></p>
             </div>
 
             <div class="form-group">
@@ -48,7 +48,9 @@
 
             <div class="form-group">
                 <label th:for="name">휴대폰</label>
-                <input type="text" size="10" class="form-control col-xs-2" th:field="*{phone}">
+                <input type="text" size="10" class="form-control col-xs-2" th:field="*{phone}"
+                       th:class="${#fields.hasErrors('phone')}? 'form-control fieldError' : 'form-control'">
+                <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" th:errorclass="fieldError"></p>
             </div>
 
             <div class="form-group">
@@ -66,7 +68,7 @@
                 <input type="text" id="addressDetail" class="form-control" th:field="*{addressDetail}" placeholder="상세주소">
 
             </div>
-            <button type="button" onclick="enrollBtn();" class="btn btn-primary" style="margin-top: 5px;">회원등록</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 5px;">회원등록</button>
         </form>
     </section>
 </div>
@@ -150,7 +152,6 @@
             document.getElementById("pwWord").innerHTML = "비밀번호 확인 완료";
         }else {
             document.getElementById("pwWord").innerHTML = "비밀번호가 다릅니다.";
-            e.value = "";
             e.focus();
         }
     }

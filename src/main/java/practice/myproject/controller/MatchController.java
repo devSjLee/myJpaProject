@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,6 +23,7 @@ import practice.myproject.repository.MatchRepository;
 import practice.myproject.repository.MemberRepository;
 import practice.myproject.service.MatchService;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -74,12 +77,17 @@ public class MatchController {
     }
 
     @PostMapping("/match/create")
-    public ModelAndView createMatch(ModelAndView mv, MatchDto matchDto, String loginId) {
+    public ModelAndView createMatch(ModelAndView mv, @Valid MatchDto matchDto, BindingResult result, String loginId) {
+        System.out.println("테스트");
+        if(result.hasErrors()) {
+        System.out.println("테스트1");
+            mv.setViewName("match/createMatchForm");
+            return mv;
+        }
         Match match = matchService.save(matchDto, loginId);
         log.info("매칭 생성 완료!!");
 
         //매칭만든사람 자동으로 해당 매칭에 가입
-        System.out.println("이게뭐지: " + loginId);
         matchService.matchAttend(loginId, match.getId());
         log.info("매칭생성자 해당매칭에 자동가입완료!!");
 

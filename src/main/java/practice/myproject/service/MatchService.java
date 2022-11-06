@@ -62,7 +62,6 @@ public class MatchService {
                     .ground(saveGround)
                     .limitedPeople(matchDto.getLimitedPeople())
                     .matchTime(matchDto.getMatchTime())
-                    .notice(matchDto.getNotice())
                     .createBy(loginId)
                     .createTime(LocalDateTime.now())
                     .build();
@@ -70,19 +69,6 @@ public class MatchService {
             return match1;
         } else {
             QGround ground = QGround.ground;
-            JPAUpdateClause jpaUpdateClause2 = new JPAUpdateClause(em, ground);
-            jpaUpdateClause2
-                    .set(ground.groundName, matchDto.getGroundName())
-                    .set(ground.address, matchDto.getAddress())
-                    .set(ground.callNumber, matchDto.getCallNumber())
-                    .set(ground.placeUrl, matchDto.getPlaceUrl())
-                    .set(ground.x, matchDto.getX())
-                    .set(ground.y, matchDto.getY())
-                    .where(ground.groundKey.eq(matchDto.getGroundKey()))
-                    .execute();
-
-            em.flush();
-            em.clear();
 
             Ground ground1 = queryFactory
                     .selectFrom(ground)
@@ -93,7 +79,6 @@ public class MatchService {
                     .ground(ground1)
                     .limitedPeople(matchDto.getLimitedPeople())
                     .matchTime(matchDto.getMatchTime())
-                    .notice(matchDto.getNotice())
                     .createBy(loginId)
                     .createTime(LocalDateTime.now())
                     .build();
@@ -157,7 +142,6 @@ public class MatchService {
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(em, match1);
         long execute = jpaUpdateClause
                 .set(match1.matchTime, matchDto.getMatchTime())
-                .set(match1.notice, matchDto.getNotice())
                 .set(match1.limitedPeople, matchDto.getLimitedPeople())
                 .where(match1.id.eq(id))
                 .execute();

@@ -38,6 +38,9 @@
     #pagination {margin:10px auto;text-align: center;}
     #pagination a {display:inline-block;margin-right:10px;}
     #pagination .on {font-weight: bold; cursor: default;color:#777;}
+    .fieldError {
+         border-color: #bd2130;
+    }
     </style>
 <body>
 <div class="container">
@@ -75,11 +78,15 @@
                         <input type="hidden" th:field="*{placeUrl}" value="">
                         <input type="hidden" th:field="*{groundKey}" value="">
 
-                        <input type="text" class="form-control" th:field="*{address}">
+                        <input type="text" class="form-control" th:field="*{address}"
+                               th:class="${#fields.hasErrors('address')}? 'form-control fieldError' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" th:errorclass="fieldError"></p>
                     </td>
                     <td>풋살장이름</td>
                     <td>
-                        <input type="text" class="form-control" th:field="*{groundName}">
+                        <input type="text" class="form-control" th:field="*{groundName}"
+                               th:class="${#fields.hasErrors('groundName')}? 'form-control fieldError' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('groundName')}" th:errors="*{groundName}" th:errorclass="fieldError"></p>
                     </td>
                 </tr>
                 <tr>
@@ -89,12 +96,14 @@
                     </td>
                     <td>인원</td>
                     <td>
-                        <select name="limitedPeople" class="form-select">
+                        <select name="limitedPeople" class="form-select"
+                                th:class="${#fields.hasErrors('limitedPeople')}? 'form-select fieldError' : 'form-select'">
                             <option value="" selected>=== 인원 선택 ===</option>
                             <option value="10">5:5</option>
                             <option value="12">6:6</option>
                             <option value="14">7:7</option>
                         </select>
+                        <p th:if="${#fields.hasErrors('limitedPeople')}" th:errors="*{limitedPeople}" th:errorclass="fieldError"></p>
                     </td>
                 </tr>
 
@@ -102,15 +111,12 @@
                 <tr>
                     <td>시간</td>
                     <td colspan="3">
-                        <input type="text" class="form-control datetimepicker" th:field="*{matchTime}" autocomplete="off">
+                        <input type="text" class="form-control datetimepicker" th:field="*{matchTime}" autocomplete="off"
+                               th:class="${#fields.hasErrors('matchTime')}? 'form-control datetimepicker fieldError' : 'form-control datetimepicker'">
+                        <p th:if="${#fields.hasErrors('matchTime')}" th:errors="*{matchTime}" th:errorclass="fieldError"></p>
                     </td>
                 </tr>
-                <tr>
-                    <td>한마디</td>
-                    <td colspan="3">
-                        <input type="text" class="form-control" id="notice" th:field="*{notice}">
-                    </td>
-                </tr>
+
             </table>
             <button type="submit" class="btn btn-primary">등록</button>
             </form>
